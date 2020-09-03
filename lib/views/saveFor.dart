@@ -151,10 +151,7 @@ class _SaveForState extends State<SaveFor> {
                             return new Text("${snapshot.error}");
                           }
                           return Text(
-                            (snapshot.data[0].gunlukIcme *
-                                    snapshot.data[0].fiyat /
-                                    20)
-                                .toString(),
+                            "₺${(snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20).toString()}",
                             style: TextStyle(color: Colors.lightGreen),
                           );
                         },
@@ -175,14 +172,7 @@ class _SaveForState extends State<SaveFor> {
                             return new Text("${snapshot.error}");
                           }
                           return Text(
-                            (DateTime.now()
-                                        .difference(DateTime.parse(
-                                            snapshot.data[0].birakmaDate))
-                                        .inDays *
-                                    (snapshot.data[0].gunlukIcme *
-                                        snapshot.data[0].fiyat /
-                                        20))
-                                .toStringAsFixed(1),
+                            "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1)}",
                             style: TextStyle(color: Colors.lightGreen),
                           );
                         },
@@ -313,7 +303,7 @@ class _SaveForState extends State<SaveFor> {
                                       Column(
                                         children: [
                                           Text(
-                                              snapshot.data[index].fiyat
+                                              "₺${snapshot.data[index].fiyat}"
                                                   .toString(),
                                               style: new TextStyle(
                                                   fontWeight: FontWeight.bold,

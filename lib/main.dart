@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:iknow/helper/shared_preference.dart';
 import 'package:iknow/kayitModel.dart';
+import 'package:iknow/views/addDaily.dart';
 import 'package:iknow/views/fagerstrom.dart';
 import 'package:iknow/views/kayitScreen.dart';
 import 'package:iknow/views/saveFor.dart';
@@ -948,7 +950,9 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    print('Diary daily');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => AddDaily()),
+                    );
                   }),
               IconButton(
                   icon: Icon(Icons.trending_down, color: Colors.white),
