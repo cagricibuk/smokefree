@@ -14,6 +14,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'helper/db_helper.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(App());
 
@@ -182,33 +183,33 @@ class _HomePageState extends State<HomePage> {
 
   TextEditingController _textFieldController = TextEditingController();
 
-  _displayDialog(BuildContext context) async {
-    return showDialog(
+  _openPopup(context) {
+    Alert(
         context: context,
-        builder: (context) {
-          return Column(
-            children: [
-              AlertDialog(
-                title: Text('Yeni mottonuzu giriniz'),
-                content: TextField(
-                  controller: _textFieldController,
-                  textInputAction: TextInputAction.go,
-                  decoration: InputDecoration(hintText: "Mottonuzu girin"),
-                ),
-                actions: <Widget>[
-                  new FlatButton(
-                    child: new Text('Submit'),
-                    onPressed: () {
-                      SharedPreferencesHelper.setMottoValue(
-                          _textFieldController.text);
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
+        title: "Yeni Motto",
+        content: Column(
+          children: <Widget>[
+            TextField(
+              controller: _textFieldController,
+              decoration: InputDecoration(
+                labelText: 'Mottonuzu girin',
               ),
-            ],
-          );
-        });
+            ),
+          ],
+        ),
+        buttons: [
+          DialogButton(
+            onPressed: () {
+              SharedPreferencesHelper.setMottoValue(_textFieldController.text);
+              Navigator.pop(context);
+              (context as Element).reassemble();
+            },
+            child: Text(
+              "EKLE",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ]).show();
   }
 
   @override
@@ -804,7 +805,7 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(14.0),
                           ),
                           onPressed: () {
-                            _displayDialog(context);
+                            _openPopup(context);
                           },
                           child: Text(
                             "KENDİ MESAJINI EKLE",
@@ -960,29 +961,6 @@ class _HomePageState extends State<HomePage> {
                     print('Cravings');
                   })
             ]),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
-            title: Text('Panel'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            title: Text('Günlük'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.trending_down),
-            title: Text('Baş Etme'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_circle_outline),
-            title: Text('Başarılar'),
-          ),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Colors.lightGreen,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:iknow/ana.dart';
 import 'package:iknow/helper/shared_preference.dart';
 import 'package:iknow/main.dart';
 
@@ -26,7 +27,7 @@ class SplashScreenState extends State<SplashScreen> {
   onDoneLoading() async {
     if (loginValue == true) {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => AnaSayfa()));
     } else {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => OnBoardingPage()));

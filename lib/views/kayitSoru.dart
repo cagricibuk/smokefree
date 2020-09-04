@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:iknow/ana.dart';
 import 'package:iknow/helper/db_helper.dart';
 import 'package:iknow/kayitModel.dart';
 import 'package:iknow/main.dart';
@@ -328,7 +329,7 @@ class _KayitSoruState extends State<KayitSoru> {
                     dbHelper.save(yeniKayit);
 
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => HomePage()));
+                        MaterialPageRoute(builder: (_) => AnaSayfa()));
                   },
                   child: Text(
                     "Kaydı Tamamla",
