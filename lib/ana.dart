@@ -24,7 +24,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       _currentIndex = index;
     });
   }
-
+// deneme
   @override
   Widget build(BuildContext context) {
     return Scaffold(
