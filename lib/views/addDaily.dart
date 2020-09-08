@@ -16,7 +16,7 @@ class _AddDailyState extends State<AddDaily> {
   TextEditingController _textFieldController = TextEditingController();
   double _currentSliderValue = 20;
   var radioValue1;
-  var datePicked;
+  var datePicked = new DateTime.now();
   var counter = 0;
   int sigara;
   var kacSigara = false;
@@ -38,16 +38,29 @@ class _AddDailyState extends State<AddDaily> {
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
               onPressed: () {
-                dbHelperDaily.initDb();
-                print("yapiyor");
-                var yeniGunluk = DailyModel(
-                    0,
-                    datePicked.toString(),
-                    (!tebrikler).toString(),
-                    sigara.toInt(),
-                    _currentSliderValue.toInt(),
-                    counter);
-                dbHelperDaily.saveDaily(yeniGunluk);
+                if (tebrikler == true) {
+                  print("yapiyor");
+                  var yeniGunluk = DailyModel(
+                      0,
+                      datePicked.toString(),
+                      (!tebrikler).toString(),
+                      0,
+                      _currentSliderValue.toInt(),
+                      counter);
+                  dbHelperDaily.saveDaily(yeniGunluk);
+                  Navigator.pop(context);
+                } else {
+                  print("yapiyor");
+                  var yeniGunluk = DailyModel(
+                      0,
+                      datePicked.toString(),
+                      (!tebrikler).toString(),
+                      sigara.toInt(),
+                      _currentSliderValue.toInt(),
+                      counter);
+                  dbHelperDaily.saveDaily(yeniGunluk);
+                  Navigator.pop(context);
+                }
               })
         ],
       ),

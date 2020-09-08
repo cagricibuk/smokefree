@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iknow/cravings.dart';
 import 'package:iknow/views/daily.dart';
 import 'package:iknow/views/fagerstrom.dart';
 import 'package:iknow/views/saveFor.dart';
@@ -12,7 +13,12 @@ class AnaSayfa extends StatefulWidget {
 
 class _AnaSayfaState extends State<AnaSayfa> {
   int _currentIndex = 0;
-  final List<Widget> _children = [HomePage(), Daily(), SaveFor(), FagerStrom()];
+  final List<Widget> _children = [
+    HomePage(),
+    Daily(),
+    Cravings(),
+    FagerStrom()
+  ];
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;

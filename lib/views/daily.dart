@@ -18,9 +18,9 @@ Future<List<DailyModel>> fetchBilgilerFromDatabase() async {
 class _DailyState extends State<Daily> {
   var dbHelper = DBHelperDaily();
   List aylar = [
-    "Ocak",
+    "Oca",
     "Şub",
-    "Mart",
+    "Mar",
     "Nis",
     "May",
     "Haz",
