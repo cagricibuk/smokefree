@@ -14,10 +14,8 @@ class _KayitScreenState extends State<KayitScreen> {
         children: [
           SizedBox(height: 50),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                width: 280,
-              ),
               Container(
                 child: FlatButton(
                   child: Text("Şimdilik geç",

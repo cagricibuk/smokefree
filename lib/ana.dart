@@ -24,12 +24,14 @@ class _AnaSayfaState extends State<AnaSayfa> {
       _currentIndex = index;
     });
   }
+
 // deneme
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 8,
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, //
         type: BottomNavigationBarType.fixed,
@@ -44,7 +46,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_down),
-            title: Text('Baş Etme'),
+            title: Text('Aşerme'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.check_circle_outline),

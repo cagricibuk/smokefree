@@ -60,7 +60,7 @@ class _CravingsState extends State<Cravings> {
           ),
           Card(
             child: Container(
-              height: 300,
+              height: MediaQuery.of(context).size.height / 2.4,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
@@ -105,7 +105,7 @@ class _CravingsState extends State<Cravings> {
             ),
           ),
           Container(
-            height: 180.0,
+            height: MediaQuery.of(context).size.height / 4,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: new List.generate(headerList.length, (int index) {

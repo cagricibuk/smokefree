@@ -16,10 +16,15 @@ class _FagerStromState extends State<FagerStrom> {
   int radioValue;
   int radioValue2;
   int radioValue3;
+  bool goster = false;
+  int eksik = 0;
+
+  List<int> cevaplar = List<int>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text("Fagerstrom Analiz"),
         centerTitle: true,
       ),
@@ -69,6 +74,7 @@ class _FagerStromState extends State<FagerStrom> {
                               onChanged: (value) {
                                 setState(() {
                                   _value = value;
+                                  cevaplar.add(value);
                                   print("value1 $_value");
                                 });
                               }),
@@ -98,6 +104,7 @@ class _FagerStromState extends State<FagerStrom> {
                                 ],
                                 radioButtonValue: (value) {
                                   radioValue = value;
+                                  cevaplar.add(value);
                                   print("radioValue $radioValue");
                                 },
                                 selectedColor: Colors.green,
@@ -138,6 +145,7 @@ class _FagerStromState extends State<FagerStrom> {
                                 onChanged: (value) {
                                   setState(() {
                                     _value2 = value;
+                                    cevaplar.add(value);
                                     print("value2 $_value2");
                                   });
                                 }),
@@ -178,6 +186,7 @@ class _FagerStromState extends State<FagerStrom> {
                               onChanged: (value) {
                                 setState(() {
                                   _value3 = value;
+                                  cevaplar.add(value);
                                   print("value3 $_value3");
                                 });
                               }),
@@ -206,6 +215,7 @@ class _FagerStromState extends State<FagerStrom> {
                               ],
                               radioButtonValue: (value) {
                                 radioValue2 = value;
+                                cevaplar.add(value);
                                 print("radioValue2 $radioValue2");
                               },
                               selectedColor: Colors.green,
@@ -238,6 +248,7 @@ class _FagerStromState extends State<FagerStrom> {
                               ],
                               radioButtonValue: (value) {
                                 radioValue3 = value;
+                                cevaplar.add(value);
                                 print("radioValue3 $radioValue3");
                               },
                               selectedColor: Colors.green,
@@ -251,6 +262,20 @@ class _FagerStromState extends State<FagerStrom> {
                     SizedBox(
                       height: 10,
                     ),
+                    Visibility(
+                        visible: goster,
+                        child: Container(
+                            child: Column(
+                          children: [
+                            Text(
+                              "UYARI!:  Lütfen tüm alanları doldurunuz.",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ))),
                     Container(
                       width: 250,
                       child: FlatButton(
@@ -259,20 +284,26 @@ class _FagerStromState extends State<FagerStrom> {
                             side: BorderSide(color: Colors.green),
                           ),
                           onPressed: () {
-                            puan = _value +
-                                _value2 +
-                                _value3 +
-                                radioValue2 +
-                                radioValue +
-                                radioValue3;
-                            print(puan);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FagerSonuc(
-                                        puan: puan,
-                                      )),
-                            );
+                            puan = 0;
+                            if (cevaplar.length < 6) {
+                              print("cevap ${cevaplar.length}");
+                              setState(() {
+                                goster = true;
+                              });
+                            } else {
+                              for (var i = 0; i < cevaplar.length; i++) {
+                                print("cevap degeri ${cevaplar[i]}");
+                                puan += cevaplar[i];
+                              }
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FagerSonuc(
+                                          puan: puan,
+                                        )),
+                              );
+                            }
                           },
                           child: Text("Bitir")),
                     ),

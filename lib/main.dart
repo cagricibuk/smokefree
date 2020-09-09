@@ -178,7 +178,46 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  AnimationController _hideFabAnimation;
+  @override
+  initState() {
+    super.initState();
+    _hideFabAnimation =
+        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+  }
+
+  @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (userScroll.metrics.maxScrollExtent !=
+                userScroll.metrics.minScrollExtent) {
+              _hideFabAnimation.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (userScroll.metrics.maxScrollExtent !=
+                userScroll.metrics.minScrollExtent) {
+              _hideFabAnimation.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
   Future<List<KayitModel>> liste = fetchBilgilerFromDatabase();
 
   TextEditingController _textFieldController = TextEditingController();
@@ -214,753 +253,760 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightGreen[600],
-        title: const Text(
-          'Dashboard',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.assessment,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => FagerStrom()));
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert,
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handleScrollNotification,
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Colors.lightGreen, // status bar color
+          title: const Text(
+            'Dashboard',
+            style: TextStyle(
               color: Colors.white,
             ),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          // Container(
-          //   padding: new EdgeInsets.all(16.0),
-          //   child: FutureBuilder<List<KayitModel>>(
-          //     future: fetchBilgilerFromDatabase(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.hasData) {
-          //       } else if (snapshot.hasError) {
-          //         return new Text("${snapshot.error}");
-          //       }
-          //       return Container(
-          //         child: Column(
-          //           children: [
-          //             Text(snapshot.data[0].adi),
-          //             Text(snapshot.data[0].soyadi),
-          //             Text(snapshot.data[0].id.toString()),
-          //             Text(snapshot.data[0].fiyat.toString()),
-          //             Text(snapshot.data[0].gunlukIcme.toString()),
-          //             Text(snapshot.data[0].birakmaDate.toString()),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
-          Container(
-            height: 300,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              image: new DecorationImage(
-                image: AssetImage("assets/arka1.png"),
-                fit: BoxFit.cover,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.assessment,
+                color: Colors.white,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: RaisedButton(
-              color: Colors.transparent,
-              onPressed: () {},
-              child: FutureBuilder<List<KayitModel>>(
-                future: fetchBilgilerFromDatabase(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                  } else {
-                    return new Text("${snapshot.error}");
-                  }
-
-                  return Container(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Sigarasız Geçen Gün",
-                          style: TextStyle(fontSize: 26, color: Colors.white),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        //new DateFormat("yMd").format(datePicked)
-                        Text(
-                          DateTime.now()
-                              .difference(
-                                  DateTime.parse(snapshot.data[0].birakmaDate))
-                              .inDays
-                              .toString(),
-                          style: TextStyle(fontSize: 50, color: Colors.white),
-                        ),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        Container(
-                          height: 40,
-                          width: 120,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14.0),
-                            ),
-                            onPressed: null,
-                            child: Text(
-                              "EXPLORE",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Container(
-            height: 300,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: RaisedButton(
-              color: Colors.white,
-              onPressed: () {},
-              child: FutureBuilder<List<KayitModel>>(
-                  future: fetchBilgilerFromDatabase(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                    } else if (snapshot.hasError) {
-                      return new Text("${snapshot.error}");
-                    }
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Paradan Tasarruf",
-                          style: TextStyle(fontSize: 26, color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1).toString()}",
-                          style:
-                              TextStyle(fontSize: 50, color: Colors.lightGreen),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          "Yıllık Tasarruf",
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "₺${((DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)) * 365).toStringAsFixed(1).toString()}",
-                          style:
-                              TextStyle(fontSize: 25, color: Colors.lightGreen),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 40,
-                          width: 120,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14.0),
-                            ),
-                            onPressed: null,
-                            child: Text(
-                              "EXPLORE",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  }),
-            ),
-          ),
-          Container(
-            height: 230,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: RaisedButton(
-              color: Colors.lightGreen,
               onPressed: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => SaveFor()));
+                    .push(MaterialPageRoute(builder: (_) => FagerStrom()));
               },
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    "Bir şeyler için biriktir",
-                    style: TextStyle(fontSize: 26, color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 250,
-                        child: Container(
-                          width: 60,
-                          child: Text(
-                              "Sigaradan tassaruf ettiğin parayla almak istediğin şeyleri belirle"),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/biket.png',
-                        width: 60,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 40,
-                    width: 120,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.0),
-                      ),
-                      onPressed: null,
-                      child: Text(
-                        "EXPLORE",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
-                ],
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.white,
               ),
             ),
-          ),
-          Container(
-            height: 300,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            // Container(
+            //   padding: new EdgeInsets.all(16.0),
+            //   child: FutureBuilder<List<KayitModel>>(
+            //     future: fetchBilgilerFromDatabase(),
+            //     builder: (context, snapshot) {
+            //       if (snapshot.hasData) {
+            //       } else if (snapshot.hasError) {
+            //         return new Text("${snapshot.error}");
+            //       }
+            //       return Container(
+            //         child: Column(
+            //           children: [
+            //             Text(snapshot.data[0].adi),
+            //             Text(snapshot.data[0].soyadi),
+            //             Text(snapshot.data[0].id.toString()),
+            //             Text(snapshot.data[0].fiyat.toString()),
+            //             Text(snapshot.data[0].gunlukIcme.toString()),
+            //             Text(snapshot.data[0].birakmaDate.toString()),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            Container(
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: new DecorationImage(
+                  image: AssetImage("assets/arka1.png"),
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
-            child: RaisedButton(
-              color: Colors.white,
-              onPressed: () {},
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
-                  Text(
-                    "Sağlık  İlerlemen",
-                    style: TextStyle(fontSize: 26, color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text("Rahat Nefes "),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            child: FutureBuilder<List<KayitModel>>(
-                              future: fetchBilgilerFromDatabase(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                } else if (snapshot.hasError) {
-                                  return new Text("${snapshot.error}");
-                                }
-                                return CircularStepProgressIndicator(
-                                  totalSteps: 100,
-                                  currentStep: (((DateTime.now()
-                                                  .difference(DateTime.parse(
-                                                      snapshot
-                                                          .data[0].birakmaDate))
-                                                  .inDays) *
-                                              100) ~/
-                                          72)
-                                      .toInt(),
-                                  stepSize: 10,
-                                  selectedColor: Colors.lightGreen,
-                                  unselectedColor: Colors.grey[200],
-                                  padding: 0,
-                                  width: 80,
-                                  height: 80,
-                                  selectedStepSize: 15,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                                    child: Text(
-                                      (((DateTime.now()
-                                                      .difference(
-                                                          DateTime.parse(
-                                                              snapshot.data[0]
-                                                                  .birakmaDate))
-                                                      .inDays) *
-                                                  100) ~/
-                                              72)
-                                          .toInt()
-                                          .toString(),
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          AutoSizeText(
-                            "Karbonmonoksit Değeri",
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            child: FutureBuilder<List<KayitModel>>(
-                              future: fetchBilgilerFromDatabase(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                } else if (snapshot.hasError) {
-                                  return new Text("${snapshot.error}");
-                                }
-                                return CircularStepProgressIndicator(
-                                  totalSteps: 100,
-                                  currentStep: (((DateTime.now()
-                                                  .difference(DateTime.parse(
-                                                      snapshot
-                                                          .data[0].birakmaDate))
-                                                  .inDays) *
-                                              100) ~/
-                                          24)
-                                      .toInt(),
-                                  stepSize: 10,
-                                  selectedColor: Colors.lightGreen,
-                                  unselectedColor: Colors.grey[200],
-                                  padding: 0,
-                                  width: 80,
-                                  height: 80,
-                                  selectedStepSize: 15,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                                    child: Text(
-                                      (((DateTime.now()
-                                                      .difference(
-                                                          DateTime.parse(
-                                                              snapshot.data[0]
-                                                                  .birakmaDate))
-                                                      .inDays) *
-                                                  100) ~/
-                                              24)
-                                          .toInt()
-                                          .toString(),
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("Nikotin"),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            child: FutureBuilder<List<KayitModel>>(
-                              future: fetchBilgilerFromDatabase(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                } else if (snapshot.hasError) {
-                                  return new Text("${snapshot.error}");
-                                }
-                                return CircularStepProgressIndicator(
-                                  totalSteps: 100,
-                                  currentStep: (((DateTime.now()
-                                                  .difference(DateTime.parse(
-                                                      snapshot
-                                                          .data[0].birakmaDate))
-                                                  .inDays) *
-                                              100) ~/
-                                          48)
-                                      .toInt(),
-                                  stepSize: 10,
-                                  selectedColor: Colors.lightGreen,
-                                  unselectedColor: Colors.grey[200],
-                                  padding: 0,
-                                  width: 80,
-                                  height: 80,
-                                  selectedStepSize: 15,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                                    child: Text(
-                                      (((DateTime.now()
-                                                      .difference(
-                                                          DateTime.parse(
-                                                              snapshot.data[0]
-                                                                  .birakmaDate))
-                                                      .inDays) *
-                                                  100) ~/
-                                              48)
-                                          .toInt()
-                                          .toString(),
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    height: 40,
-                    width: 120,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.0),
-                      ),
-                      onPressed: null,
-                      child: Text(
-                        "EXPLORE",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
                 ],
               ),
-            ),
-          ),
-          Container(
-            height: 230,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              image: new DecorationImage(
-                  image: AssetImage("assets/arka1.png"), fit: BoxFit.cover),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: RaisedButton(
-              color: Colors.transparent,
-              onPressed: () {},
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  FutureBuilder<String>(
-                    future: SharedPreferencesHelper
-                        .getMottoValue(), // a previously-obtained Future<String> or null
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      List<Widget> children;
-                      if (snapshot.hasData) {
-                        children = <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.only(top: 16),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: AutoSizeText(
-                                  '${snapshot.data}',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                  maxLines: 2,
-                                ),
-                              )),
-                        ];
-                      } else if (snapshot.hasError) {
-                        children = <Widget>[
-                          Icon(
-                            Icons.error_outline,
-                            color: Colors.red,
-                            size: 60,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Text('Error: ${snapshot.error}'),
-                          )
-                        ];
-                      } else {
-                        children = <Widget>[
-                          SizedBox(
-                            child: CircularProgressIndicator(),
-                            width: 60,
-                            height: 60,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 16),
-                            child: Text('Awaiting result...'),
-                          )
-                        ];
-                      }
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: children,
-                        ),
-                      );
-                    },
-                  ),
-
-                  // Text(
-                  //   SharedPreferencesHelper.getMottoValue(),
-                  //   style: TextStyle(fontSize: 22, color: Colors.black),
-                  // ),
-
-                  Column(
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 220,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.0),
-                          ),
-                          onPressed: () {
-                            _openPopup(context);
-                          },
-                          child: Text(
-                            "KENDİ MESAJINI EKLE",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 230,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: RaisedButton(
-              color: Colors.white,
-              onPressed: () {},
-              child: FutureBuilder<List<KayitModel>>(
+              child: RaisedButton(
+                color: Colors.transparent,
+                onPressed: () {},
+                child: FutureBuilder<List<KayitModel>>(
                   future: fetchBilgilerFromDatabase(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                    } else if (snapshot.hasError) {
+                    } else {
                       return new Text("${snapshot.error}");
                     }
+
                     return Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Sigarasız Geçen Gün",
+                            style: TextStyle(fontSize: 26, color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          //new DateFormat("yMd").format(datePicked)
+                          Text(
+                            DateTime.now()
+                                .difference(DateTime.parse(
+                                    snapshot.data[0].birakmaDate))
+                                .inDays
+                                .toString(),
+                            style: TextStyle(fontSize: 50, color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 80,
+                          ),
+                          Container(
+                            height: 40,
+                            width: 120,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              onPressed: null,
+                              child: Text(
+                                "EXPLORE",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Container(
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: RaisedButton(
+                color: Colors.white,
+                onPressed: () {},
+                child: FutureBuilder<List<KayitModel>>(
+                    future: fetchBilgilerFromDatabase(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                      } else if (snapshot.hasError) {
+                        return new Text("${snapshot.error}");
+                      }
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Paradan Tasarruf",
+                            style: TextStyle(fontSize: 26, color: Colors.black),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1).toString()}",
+                            style: TextStyle(
+                                fontSize: 50, color: Colors.lightGreen),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "Yıllık Tasarruf",
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "₺${((snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20) * 365).toStringAsFixed(1).toString()}",
+                            style: TextStyle(
+                                fontSize: 25, color: Colors.lightGreen),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 40,
+                            width: 120,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              onPressed: null,
+                              child: Text(
+                                "EXPLORE",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    }),
+              ),
+            ),
+            Container(
+              height: 230,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: RaisedButton(
+                color: Colors.lightGreen,
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => SaveFor()));
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Text(
+                      "Bir şeyler için biriktir",
+                      style: TextStyle(fontSize: 26, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 250,
+                          child: Container(
+                            width: 60,
+                            child: AutoSizeText(
+                              "Sigaradan tassaruf ettiğin parayla almak istediğin şeyleri belirle",
+                              style: TextStyle(color: Colors.white),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ),
+                        Image.asset(
+                          'assets/biket.png',
+                          width: 60,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 40,
+                      width: 120,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14.0),
+                        ),
+                        onPressed: null,
+                        child: Text(
+                          "EXPLORE",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: RaisedButton(
+                color: Colors.white,
+                onPressed: () {},
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Sağlık  İlerlemen",
+                      style: TextStyle(fontSize: 26, color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
                           children: [
-                            Text(
-                              "İlerlemen",
-                              style:
-                                  TextStyle(fontSize: 22, color: Colors.black),
+                            Text("Rahat Nefes "),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              child: FutureBuilder<List<KayitModel>>(
+                                future: fetchBilgilerFromDatabase(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                  } else if (snapshot.hasError) {
+                                    return new Text("${snapshot.error}");
+                                  }
+                                  return CircularStepProgressIndicator(
+                                    totalSteps: 100,
+                                    currentStep: (((DateTime.now()
+                                                    .difference(DateTime.parse(
+                                                        snapshot.data[0]
+                                                            .birakmaDate))
+                                                    .inDays) *
+                                                100) ~/
+                                            72)
+                                        .toInt(),
+                                    stepSize: 10,
+                                    selectedColor: Colors.lightGreen,
+                                    unselectedColor: Colors.grey[200],
+                                    padding: 0,
+                                    width: 80,
+                                    height: 80,
+                                    selectedStepSize: 15,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 15, 0, 0),
+                                      child: Text(
+                                        (((DateTime.now()
+                                                        .difference(DateTime
+                                                            .parse(snapshot
+                                                                .data[0]
+                                                                .birakmaDate))
+                                                        .inDays) *
+                                                    100) ~/
+                                                72)
+                                            .toInt()
+                                            .toString(),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            AutoSizeText(
+                              "Karbonmonoksit Değeri",
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "İçilmeyen sigaralar",
-                                      style: TextStyle(fontSize: 15),
+                            Container(
+                              child: FutureBuilder<List<KayitModel>>(
+                                future: fetchBilgilerFromDatabase(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                  } else if (snapshot.hasError) {
+                                    return new Text("${snapshot.error}");
+                                  }
+                                  return CircularStepProgressIndicator(
+                                    totalSteps: 100,
+                                    currentStep: (((DateTime.now()
+                                                    .difference(DateTime.parse(
+                                                        snapshot.data[0]
+                                                            .birakmaDate))
+                                                    .inDays) *
+                                                100) ~/
+                                            24)
+                                        .toInt(),
+                                    stepSize: 10,
+                                    selectedColor: Colors.lightGreen,
+                                    unselectedColor: Colors.grey[200],
+                                    padding: 0,
+                                    width: 80,
+                                    height: 80,
+                                    selectedStepSize: 15,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 15, 0, 0),
+                                      child: Text(
+                                        (((DateTime.now()
+                                                        .difference(DateTime
+                                                            .parse(snapshot
+                                                                .data[0]
+                                                                .birakmaDate))
+                                                        .inDays) *
+                                                    100) ~/
+                                                24)
+                                            .toInt()
+                                            .toString(),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ),
-                                    AutoSizeText(
-                                      (DateTime.now()
-                                                  .difference(DateTime.parse(
-                                                      snapshot
-                                                          .data[0].birakmaDate))
-                                                  .inDays *
-                                              snapshot.data[0].gunlukIcme)
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.lightGreen),
-                                      maxLines: 1,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Sigara İsteğine direnme",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      "0",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.lightGreen),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Sigara içmeden geçen süre(saat)",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    AutoSizeText(
-                                      (DateTime.now()
-                                              .difference(DateTime.parse(
-                                                  snapshot.data[0].birakmaDate))
-                                              .inHours)
-                                          .toString(),
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.lightGreen),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                  );
+                                },
+                              ),
                             ),
                           ],
                         ),
+                        Column(
+                          children: [
+                            Text("Nikotin"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              child: FutureBuilder<List<KayitModel>>(
+                                future: fetchBilgilerFromDatabase(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                  } else if (snapshot.hasError) {
+                                    return new Text("${snapshot.error}");
+                                  }
+                                  return CircularStepProgressIndicator(
+                                    totalSteps: 100,
+                                    currentStep: (((DateTime.now()
+                                                    .difference(DateTime.parse(
+                                                        snapshot.data[0]
+                                                            .birakmaDate))
+                                                    .inDays) *
+                                                100) ~/
+                                            48)
+                                        .toInt(),
+                                    stepSize: 10,
+                                    selectedColor: Colors.lightGreen,
+                                    unselectedColor: Colors.grey[200],
+                                    padding: 0,
+                                    width: 80,
+                                    height: 80,
+                                    selectedStepSize: 15,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 15, 0, 0),
+                                      child: Text(
+                                        (((DateTime.now()
+                                                        .difference(DateTime
+                                                            .parse(snapshot
+                                                                .data[0]
+                                                                .birakmaDate))
+                                                        .inDays) *
+                                                    100) ~/
+                                                48)
+                                            .toInt()
+                                            .toString(),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      height: 40,
+                      width: 120,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14.0),
+                        ),
+                        onPressed: null,
+                        child: Text(
+                          "EXPLORE",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    );
-                  }),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ]),
-      ),
-      floatingActionButton: Visibility(
-        visible: true,
-        child: FabCircularMenu(
-            fabOpenIcon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            fabCloseIcon: Icon(Icons.close, color: Colors.white),
-            children: <Widget>[
-              IconButton(
-                  icon: Icon(
-                    Icons.today,
-                    color: Colors.white,
+            Container(
+              height: 230,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: new DecorationImage(
+                    image: AssetImage("assets/arka1.png"), fit: BoxFit.cover),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => AddDaily()),
-                    );
-                  }),
-              IconButton(
-                  icon: Icon(Icons.trending_down, color: Colors.white),
-                  onPressed: () {
-                    print('Cravings');
-                  })
-            ]),
+                ],
+              ),
+              child: RaisedButton(
+                color: Colors.transparent,
+                onPressed: () {},
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FutureBuilder<String>(
+                      future: SharedPreferencesHelper
+                          .getMottoValue(), // a previously-obtained Future<String> or null
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String> snapshot) {
+                        List<Widget> children;
+                        if (snapshot.hasData) {
+                          children = <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: AutoSizeText(
+                                    '${snapshot.data}',
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                    maxLines: 2,
+                                  ),
+                                )),
+                          ];
+                        } else if (snapshot.hasError) {
+                          children = <Widget>[
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Text('Error: ${snapshot.error}'),
+                            )
+                          ];
+                        } else {
+                          children = <Widget>[
+                            SizedBox(
+                              child: CircularProgressIndicator(),
+                              width: 60,
+                              height: 60,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting result...'),
+                            )
+                          ];
+                        }
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: children,
+                          ),
+                        );
+                      },
+                    ),
+
+                    // Text(
+                    //   SharedPreferencesHelper.getMottoValue(),
+                    //   style: TextStyle(fontSize: 22, color: Colors.black),
+                    // ),
+
+                    Column(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 220,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.0),
+                            ),
+                            onPressed: () {
+                              _openPopup(context);
+                            },
+                            child: Text(
+                              "KENDİ MESAJINI EKLE",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              height: 230,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: RaisedButton(
+                color: Colors.white,
+                onPressed: () {},
+                child: FutureBuilder<List<KayitModel>>(
+                    future: fetchBilgilerFromDatabase(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                      } else if (snapshot.hasError) {
+                        return new Text("${snapshot.error}");
+                      }
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "İlerlemen",
+                                style: TextStyle(
+                                    fontSize: 22, color: Colors.black),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "İçilmeyen sigaralar",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      AutoSizeText(
+                                        (DateTime.now()
+                                                    .difference(DateTime.parse(
+                                                        snapshot.data[0]
+                                                            .birakmaDate))
+                                                    .inDays *
+                                                snapshot.data[0].gunlukIcme)
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.lightGreen),
+                                        maxLines: 1,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Sigara İsteğine direnme",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        "0",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.lightGreen),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Sigara içmeden geçen süre(saat)",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      AutoSizeText(
+                                        (DateTime.now()
+                                                .difference(DateTime.parse(
+                                                    snapshot
+                                                        .data[0].birakmaDate))
+                                                .inHours)
+                                            .toString(),
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.lightGreen),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ]),
+        ),
+        floatingActionButton: ScaleTransition(
+          scale: _hideFabAnimation,
+          child: FabCircularMenu(
+              fabOpenIcon: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              fabCloseIcon: Icon(Icons.close, color: Colors.white),
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(
+                      Icons.today,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => AddDaily()),
+                      );
+                    }),
+                IconButton(
+                    icon: Icon(Icons.trending_down, color: Colors.white),
+                    onPressed: () {
+                      print('Cravings');
+                    })
+              ]),
+        ),
       ),
     );
   }

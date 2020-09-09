@@ -84,12 +84,15 @@ class _AddDailyState extends State<AddDaily> {
                       setState(() async {
                         datePicked = await DatePicker.showSimpleDatePicker(
                           context,
-                          initialDate: DateTime(1960),
-                          firstDate: DateTime(1960),
-                          lastDate: DateTime(2022),
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1990),
+                          lastDate: DateTime(2030),
                           dateFormat: "yyyy-MM-dd",
                           looping: true,
                         );
+                        if (datePicked == null) {
+                          datePicked = DateTime.now();
+                        }
                         print(new DateFormat("yMd").format(datePicked));
                       });
                     },

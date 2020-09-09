@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iknow/main.dart';
+import 'package:iknow/ana.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'fagerstrom.dart';
 
@@ -16,13 +17,13 @@ class _FagerSonucState extends State<FagerSonuc> {
   @override
   void initState() {
     super.initState();
-    if (widget.puan < 2) {
+    if (widget.puan <= 2) {
       mesaj = "Çok düşük";
-    } else if (widget.puan < 4 && widget.puan > 2) {
+    } else if (widget.puan <= 4 && widget.puan > 2) {
       mesaj = "Düşük";
-    } else if (widget.puan < 6 && widget.puan > 4) {
+    } else if (widget.puan <= 6 && widget.puan > 4) {
       mesaj = "Orta";
-    } else if (widget.puan < 8 && widget.puan > 6) {
+    } else if (widget.puan <= 8 && widget.puan > 6) {
       mesaj = "Yüksek";
     } else
       mesaj = "Çok Yüksek";
@@ -33,7 +34,10 @@ class _FagerSonucState extends State<FagerSonuc> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Analiz Sonucu"),
+        title: Text(
+          "Analiz Sonucu",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body: Container(
@@ -45,27 +49,29 @@ class _FagerSonucState extends State<FagerSonuc> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      children: [
-                        Text(
-                          "Bağımlılık seviyesi",
-                          style: TextStyle(fontSize: 26),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          mesaj,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 20,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Column(
+                        children: [
+                          AutoSizeText(
+                            "Bağımlılık seviyesi",
+                            maxLines: 1,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            mesaj,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
-                      height: 400,
+                      width: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.of(context).size.height / 1.7,
                       child: StepProgressIndicator(
                         progressDirection: TextDirection.rtl,
                         direction: Axis.vertical,
@@ -107,9 +113,12 @@ class _FagerSonucState extends State<FagerSonuc> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   color: Colors.lightBlue,
-                  onPressed: () => {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => HomePage())),
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AnaSayfa()),
+                        ModalRoute.withName('/'));
                   },
                   child: Text(
                     "Anasayfaya Dön",

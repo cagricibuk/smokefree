@@ -5,7 +5,7 @@ import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:iknow/ana.dart';
 import 'package:iknow/helper/db_helper.dart';
 import 'package:iknow/kayitModel.dart';
-import 'package:iknow/main.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 
 class KayitSoru extends StatefulWidget {
@@ -38,7 +38,11 @@ class _KayitSoruState extends State<KayitSoru> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Kayıt Ol"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Kayıt Ol",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -52,9 +56,10 @@ class _KayitSoruState extends State<KayitSoru> {
                   width: 20,
                 ),
                 Container(
-                    child: Text(
+                    child: AutoSizeText(
                   "Uygulamayı kullanmak için hesap bilgilerinizi girin",
-                  style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                  style: TextStyle(color: Colors.grey[600]),
+                  maxLines: 1,
                 )),
               ],
             ),
@@ -245,6 +250,9 @@ class _KayitSoruState extends State<KayitSoru> {
                           locale: DateTimePickerLocale.tr,
                           looping: true,
                         );
+                        if (datePicked == null) {
+                          datePicked = DateTime.now();
+                        }
                         print(new DateFormat("yMd").format(datePicked));
                       });
                     },
@@ -257,7 +265,7 @@ class _KayitSoruState extends State<KayitSoru> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(datePicked == null
+                  Text(datePicked2 == null
                       ? "tarih seçilmedi"
                       : new DateFormat("yMd").format(datePicked).toString()),
                   RaisedButton(
@@ -273,6 +281,9 @@ class _KayitSoruState extends State<KayitSoru> {
                           locale: DateTimePickerLocale.tr,
                           looping: true,
                         );
+                        if (datePicked2 == null) {
+                          datePicked2 = DateTime.now();
+                        }
                         print(new DateFormat("yMd").format(datePicked2));
                       });
                     },
@@ -306,8 +317,11 @@ class _KayitSoruState extends State<KayitSoru> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
-                width: 280,
+                width: MediaQuery.of(context).size.width / 1.3,
                 child: RaisedButton(
                   elevation: 2,
                   shape: RoundedRectangleBorder(
