@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:iknow/ana.dart';
 import 'package:iknow/helper/db_helper.dart';
+import 'package:iknow/helper/db_helperTips.dart';
 import 'package:iknow/kayitModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
+
+import '../tipsModel.dart';
 
 class KayitSoru extends StatefulWidget {
   @override
@@ -15,11 +20,39 @@ class KayitSoru extends StatefulWidget {
 
 class _KayitSoruState extends State<KayitSoru> {
   DBHelper dbHelper;
+  var dbhelperTips = DBHelperTips();
+  List<String> _tips = [];
   @override
   void initState() {
     dbHelper = DBHelper();
-
+    _setup();
     super.initState();
+  }
+
+  Future<List<String>> _loadTips() async {
+    List<String> tips = [];
+    await rootBundle.loadString('assets/tips.txt').then((q) {
+      for (String i in LineSplitter().convert(q)) {
+        tips.add(i);
+      }
+    });
+    return tips;
+  }
+
+  _setup() async {
+    // Retrieve the questions (Processed in the background)
+    List<String> tips = await _loadTips();
+
+    // Notify the UI and display the questions
+    setState(() {
+      _tips = tips;
+    });
+    for (var i = 0; i < tips.length; i++) {
+      if (i < 9)
+        dbhelperTips.saveTips(TipsModel(0, tips[i], "false", "a"));
+      else
+        dbhelperTips.saveTips(TipsModel(0, tips[i], "false", "b"));
+    }
   }
 
   TextEditingController adiController = TextEditingController();
@@ -355,4 +388,10 @@ class _KayitSoruState extends State<KayitSoru> {
       ),
     );
   }
+}
+
+@override
+Widget build(BuildContext context) {
+  // TODO: implement build
+  throw UnimplementedError();
 }

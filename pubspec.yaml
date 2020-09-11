@@ -46,6 +46,8 @@ dev_dependencies:
   fab_circular_menu: ^1.0.0
   auto_size_text: ^2.1.0
   rflutter_alert: ^1.0.3
+  fl_chart: ^0.11.1
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

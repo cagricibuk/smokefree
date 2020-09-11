@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iknow/views/cravings_analiz.dart';
 import 'package:iknow/views/tips.dart';
 
 class Cravings extends StatefulWidget {
@@ -38,7 +39,10 @@ class _CravingsState extends State<Cravings> {
                     color: Colors.lightGreen,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
-                    onPressed: () => {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => BarChartSample3()));
+                    },
                     child: Text(
                       "Cravings Analiz Et",
                       style: TextStyle(color: Colors.white),
@@ -60,12 +64,16 @@ class _CravingsState extends State<Cravings> {
           ),
           Card(
             child: Container(
-              height: MediaQuery.of(context).size.height / 2.4,
+              height: MediaQuery.of(context).size.height / 2.3,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: 10,
+                  ),
+                  Text(
+                    "Favorilerim",
+                    style: TextStyle(fontSize: 22),
                   ),
                   Container(
                     height: 160,
@@ -78,7 +86,7 @@ class _CravingsState extends State<Cravings> {
                   ),
                   Text("İpuçlarımıza göz atın veya kendinizinkini ekleyin"),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Container(
                       width: MediaQuery.of(context).size.width / 2 - 80,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/helper/db_helperTips.dart';
 import 'package:iknow/tipsModel.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Tips extends StatefulWidget {
   final int puan;
@@ -24,6 +25,7 @@ _icon(a) {
     );
 }
 
+//Todo: sorduları ouana göre helperdan yapılabilir.
 Future<List<TipsModel>> fetchBilgilerFromDatabase(puan) async {
   var dbHelper = DBHelperTips();
   if (puan == 0) {
@@ -60,13 +62,10 @@ class _TipsState extends State<Tips> {
             return new ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
-                  var index1 = snapshot.data[index];
                   return Card(
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 50,
                           child: Row(
                             children: [
                               IconButton(
@@ -78,31 +77,25 @@ class _TipsState extends State<Tips> {
                                     } else
                                       snapshot.data[index].isFavorite = "true";
 
-                                    snapshot.data[index].aciklama =
-                                        "degistirildi";
-
                                     dbhelperTips
                                         .updateTips(snapshot.data[index]);
                                     (context as Element).reassemble();
                                   }),
-                              Column(
-                                children: [
-                                  Text(
-                                      "${snapshot.data[index].isFavorite}"
-                                          .toString(),
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14.0)),
-                                  Text("${snapshot.data[index].aciklama}",
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14.0)),
-                                  Text("${snapshot.data[index].kategori}",
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14.0)),
-                                ],
+                              // AutoSizeText(
+                              //     "${snapshot.data[index].isFavorite}"
+                              //         .toString(),
+                              //     style: new TextStyle(
+                              //         fontWeight: FontWeight.bold,
+                              //         fontSize: 14.0)),
+                              Flexible(
+                                child: AutoSizeText(
+                                    "${snapshot.data[index].aciklama}",
+                                    style: new TextStyle(fontSize: 14.0)),
                               ),
+                              // Text("${snapshot.data[index].kategori}",
+                              //     style: new TextStyle(
+                              //         fontWeight: FontWeight.bold,
+                              //         fontSize: 14.0)),
                             ],
                           ),
                         )),
