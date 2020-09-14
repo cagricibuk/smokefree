@@ -53,6 +53,7 @@ _openPopup(context) {
             print(aciklamaController.text);
             print(int.parse(fiyatController.text));
             Navigator.pop(context);
+            // ignore: invalid_use_of_protected_member
             (context as Element).reassemble();
           },
           child: Text(
@@ -239,12 +240,11 @@ class _SaveForState extends State<SaveFor> {
                                                     List<KayitModel>>(
                                               future:
                                                   fetchKayitBilgilerFromDatabase(),
+                                              // ignore: missing_return
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
                                                   print(index1.fiyat);
-                                                  return
-                                                      ////
-                                                      CircularStepProgressIndicator(
+                                                  return CircularStepProgressIndicator(
                                                     totalSteps: index1.fiyat,
                                                     currentStep: (DateTime.now()
                                                             .difference(DateTime

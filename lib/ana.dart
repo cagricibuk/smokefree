@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/cravings.dart';
 import 'package:iknow/views/daily.dart';
-import 'package:iknow/views/fagerstrom.dart';
-import 'package:iknow/views/saveFor.dart';
-
+import 'package:iknow/views/missions.dart';
 import 'main.dart';
 
+// ignore: must_be_immutable
 class AnaSayfa extends StatefulWidget {
+  int indis;
+  AnaSayfa({this.indis});
   @override
   _AnaSayfaState createState() => _AnaSayfaState();
 }
 
 class _AnaSayfaState extends State<AnaSayfa> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    HomePage(),
-    Daily(),
-    Cravings(),
-    FagerStrom()
-  ];
+  final List<Widget> _children = [HomePage(), Daily(), Cravings(), Missions()];
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.indis != null) _currentIndex = widget.indis;
   }
 
 // deneme

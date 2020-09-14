@@ -19,6 +19,35 @@ class _CravingsState extends State<Cravings> {
     "Cues",
     "Sources"
   ];
+  List images = [
+    Image.asset(
+      "assets/dosome.png",
+    ),
+    Image.asset(
+      "assets/eat.jpg",
+    ),
+    Image.asset(
+      "assets/relax.jpg",
+    ),
+    Image.asset(
+      "assets/cigara.jpg",
+    ),
+    Image.asset(
+      "assets/cigara.jpg",
+    ),
+    Image.asset(
+      "assets/cigara.jpg",
+    ),
+    Image.asset(
+      "assets/cigara.jpg",
+    ),
+    Image.asset(
+      "assets/cigara.jpg",
+    ),
+    Image.asset(
+      "assets/cigara.jpg",
+    )
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +107,7 @@ class _CravingsState extends State<Cravings> {
                   Container(
                     height: 160,
                     child: Image.asset(
-                      "assets/cigara.jpg",
+                      "assets/favorite.jpg",
                     ),
                   ),
                   SizedBox(
@@ -135,9 +164,7 @@ class _CravingsState extends State<Cravings> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Image.asset(
-                            "assets/cigara.jpg",
-                          ),
+                          images[index],
                           new Text("${headerList[index]}"),
                         ],
                       ),

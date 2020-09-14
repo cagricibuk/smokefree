@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:iknow/ana.dart';
 import 'package:iknow/helper/db_helper.dart';
+import 'package:iknow/helper/db_helperMissions.dart';
 import 'package:iknow/helper/db_helperTips.dart';
 import 'package:iknow/kayitModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:iknow/missionModel.dart';
 import 'package:intl/intl.dart';
 
 import '../tipsModel.dart';
@@ -21,10 +23,15 @@ class KayitSoru extends StatefulWidget {
 class _KayitSoruState extends State<KayitSoru> {
   DBHelper dbHelper;
   var dbhelperTips = DBHelperTips();
+  // ignore: unused_field
   List<String> _tips = [];
+  var dbhelperMissions = DBHelperMissions();
+  // ignore: unused_field
+  List<String> _missions = [];
   @override
   void initState() {
     dbHelper = DBHelper();
+    dbhelperMissions = DBHelperMissions();
     _setup();
     super.initState();
   }
@@ -39,19 +46,35 @@ class _KayitSoruState extends State<KayitSoru> {
     return tips;
   }
 
+  Future<List<String>> _loadMissions() async {
+    List<String> missions = [];
+    await rootBundle.loadString('assets/missions.txt').then((q) {
+      for (String i in LineSplitter().convert(q)) {
+        missions.add(i);
+      }
+    });
+    return missions;
+  }
+
   _setup() async {
     // Retrieve the questions (Processed in the background)
     List<String> tips = await _loadTips();
+    List<String> missions = await _loadMissions();
 
     // Notify the UI and display the questions
     setState(() {
       _tips = tips;
+      _missions = missions;
     });
     for (var i = 0; i < tips.length; i++) {
       if (i < 9)
         dbhelperTips.saveTips(TipsModel(0, tips[i], "false", "a"));
       else
         dbhelperTips.saveTips(TipsModel(0, tips[i], "false", "b"));
+    }
+    for (var i = 0; i < missions.length; i++) {
+      dbhelperMissions
+          .saveMissions(MissionModel(0, "baslik $i", missions[i], "false"));
     }
   }
 
@@ -65,7 +88,8 @@ class _KayitSoruState extends State<KayitSoru> {
 
   // var yeniKayıt = new KayitModel(adi, soyadi, il, fiyat, gunlukIcme, icmeYil, birakmaIstegi, birthDate, id)
   int _value = 1;
-  var datePicked, datePicked2;
+  var datePicked;
+  var datePicked2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -300,7 +324,7 @@ class _KayitSoruState extends State<KayitSoru> {
                 children: [
                   Text(datePicked2 == null
                       ? "tarih seçilmedi"
-                      : new DateFormat("yMd").format(datePicked).toString()),
+                      : new DateFormat("yMd").format(datePicked2).toString()),
                   RaisedButton(
                     child: Text("Bırakma Tarihi"),
                     onPressed: () {
@@ -375,8 +399,11 @@ class _KayitSoruState extends State<KayitSoru> {
 
                     dbHelper.save(yeniKayit);
 
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => AnaSayfa()));
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AnaSayfa()),
+                        ModalRoute.withName('/'));
                   },
                   child: Text(
                     "Kaydı Tamamla",
@@ -392,6 +419,5 @@ class _KayitSoruState extends State<KayitSoru> {
 
 @override
 Widget build(BuildContext context) {
-  // TODO: implement build
   throw UnimplementedError();
 }

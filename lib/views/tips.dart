@@ -26,6 +26,7 @@ _icon(a) {
 }
 
 //Todo: sorduları ouana göre helperdan yapılabilir.
+// ignore: missing_return
 Future<List<TipsModel>> fetchBilgilerFromDatabase(puan) async {
   var dbHelper = DBHelperTips();
   if (puan == 0) {
@@ -44,8 +45,6 @@ class _TipsState extends State<Tips> {
   var dbhelperTips = DBHelperTips();
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 
@@ -79,6 +78,7 @@ class _TipsState extends State<Tips> {
 
                                     dbhelperTips
                                         .updateTips(snapshot.data[index]);
+                                    // ignore: invalid_use_of_protected_member
                                     (context as Element).reassemble();
                                   }),
                               // AutoSizeText(
@@ -115,6 +115,7 @@ class _TipsState extends State<Tips> {
 
           dbhelperTips.saveTips(TipsModel(0, "aciklama", "false", "a"));
 
+          // ignore: invalid_use_of_protected_member
           (context as Element).reassemble();
         },
         child: Icon(Icons.add),

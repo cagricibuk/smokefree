@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'fagerstrom.dart';
 
+// ignore: must_be_immutable
 class FagerSonuc extends StatefulWidget {
   int puan;
   FagerSonuc({this.puan});

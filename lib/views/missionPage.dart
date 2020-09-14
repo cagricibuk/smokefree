@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import 'package:iknow/ana.dart';
+import 'package:iknow/helper/db_helperMissions.dart';
+import 'package:iknow/missionModel.dart';
+
+// ignore: must_be_immutable
+class MissionPage extends StatefulWidget {
+  int id;
+  MissionPage({this.id});
+  @override
+  _MissionPageState createState() => _MissionPageState();
+}
+
+class _MissionPageState extends State<MissionPage> {
+  Future<List<MissionModel>> fetchBilgilerFromDatabase() async {
+    var dbHelper = DBHelperMissions();
+
+    Future<List<MissionModel>> bilgiler = dbHelper.getMissionsByID(widget.id);
+
+    return bilgiler;
+  }
+
+  var dbHelper = DBHelperMissions();
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<MissionModel>>(
+      future: fetchBilgilerFromDatabase(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+        } else {
+          return new Text("${snapshot.error}");
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              snapshot.data[0].baslik,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              child: Column(children: [
+                Text(
+                  "Bugünkü görevin",
+                  style: TextStyle(fontSize: 26),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(snapshot.data[0].aciklama,
+                    style: TextStyle(fontSize: 17, color: Colors.black)),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                    width: 280,
+                    child: RaisedButton(
+                      color: Colors.lightGreen,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      onPressed: () {
+                        snapshot.data[0].tamamlandi = "true";
+                        dbHelper.updateMissions(snapshot.data[0]);
+
+                        //ana sayfada 3. indisli sayfayı aç
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnaSayfa(
+                              indis: 3,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Tamamlandı Olarak İşaretle",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

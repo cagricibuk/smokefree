@@ -241,6 +241,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             onPressed: () {
               SharedPreferencesHelper.setMottoValue(_textFieldController.text);
               Navigator.pop(context);
+              // ignore: invalid_use_of_protected_member
               (context as Element).reassemble();
             },
             child: Text(
