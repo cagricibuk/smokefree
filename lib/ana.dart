@@ -52,7 +52,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.check_circle_outline),
-            title: Text('Başarılar'),
+            title: Text('Görevler'),
           ),
         ],
 

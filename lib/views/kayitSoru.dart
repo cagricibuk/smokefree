@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:iknow/ana.dart';
+import 'package:iknow/basariModel.dart';
 import 'package:iknow/helper/db_helper.dart';
+import 'package:iknow/helper/db_helperBasari.dart';
 import 'package:iknow/helper/db_helperMissions.dart';
 import 'package:iknow/helper/db_helperTips.dart';
 import 'package:iknow/kayitModel.dart';
@@ -22,7 +24,10 @@ class KayitSoru extends StatefulWidget {
 
 class _KayitSoruState extends State<KayitSoru> {
   DBHelper dbHelper;
+  var dbHelperBasari = DBHelperBasari();
   var dbhelperTips = DBHelperTips();
+  // ignore: unused_field
+  List<String> _badges = [];
   // ignore: unused_field
   List<String> _tips = [];
   var dbhelperMissions = DBHelperMissions();
@@ -32,6 +37,7 @@ class _KayitSoruState extends State<KayitSoru> {
   void initState() {
     dbHelper = DBHelper();
     dbhelperMissions = DBHelperMissions();
+    dbhelperTips = DBHelperTips();
     _setup();
     super.initState();
   }
@@ -56,15 +62,27 @@ class _KayitSoruState extends State<KayitSoru> {
     return missions;
   }
 
+  Future<List<String>> _loadBadges() async {
+    List<String> badges = [];
+    await rootBundle.loadString('assets/badges.txt').then((q) {
+      for (String i in LineSplitter().convert(q)) {
+        badges.add(i);
+      }
+    });
+    return badges;
+  }
+
   _setup() async {
     // Retrieve the questions (Processed in the background)
     List<String> tips = await _loadTips();
     List<String> missions = await _loadMissions();
+    List<String> badges = await _loadBadges();
 
     // Notify the UI and display the questions
     setState(() {
       _tips = tips;
       _missions = missions;
+      _badges = badges;
     });
     for (var i = 0; i < tips.length; i++) {
       if (i < 9)
@@ -75,6 +93,9 @@ class _KayitSoruState extends State<KayitSoru> {
     for (var i = 0; i < missions.length; i++) {
       dbhelperMissions
           .saveMissions(MissionModel(0, "baslik $i", missions[i], "false"));
+    }
+    for (var i = 0; i < badges.length; i++) {
+      dbHelperBasari.saveBasari(BasariModel(0, badges[i], "a", "yok", "false"));
     }
   }
 

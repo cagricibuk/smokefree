@@ -33,6 +33,20 @@ class _MissionPageState extends State<MissionPage> {
 
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              color: Colors.white,
+              onPressed: () => {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AnaSayfa(
+                      indis: 3,
+                    ),
+                  ),
+                )
+              },
+              icon: Icon(Icons.arrow_back),
+            ),
             title: Text(
               snapshot.data[0].baslik,
               style: TextStyle(color: Colors.white),
@@ -76,6 +90,31 @@ class _MissionPageState extends State<MissionPage> {
                       },
                       child: Text(
                         "Tamamlandı Olarak İşaretle",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )),
+                Container(
+                    width: 280,
+                    child: RaisedButton(
+                      color: Colors.red,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      onPressed: () {
+                        snapshot.data[0].tamamlandi = "false";
+                        dbHelper.updateMissions(snapshot.data[0]);
+
+                        //ana sayfada 3. indisli sayfayı aç
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnaSayfa(
+                              indis: 3,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Tamamlanmadı Olarak İşaretle",
                         style: TextStyle(color: Colors.white),
                       ),
                     )),

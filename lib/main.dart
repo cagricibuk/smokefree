@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:iknow/helper/shared_preference.dart';
 import 'package:iknow/kayitModel.dart';
 import 'package:iknow/views/addDaily.dart';
+import 'package:iknow/views/badges.dart';
 import 'package:iknow/views/fagerstrom.dart';
 import 'package:iknow/views/kayitScreen.dart';
 import 'package:iknow/views/saveFor.dart';
@@ -980,6 +981,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     }),
               ),
             ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => Badges()));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "Latest Achievements",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ]),
         ),
         floatingActionButton: ScaleTransition(

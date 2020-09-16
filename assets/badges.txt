@@ -1,0 +1,11 @@
+Bırakma tarihi belirledin bir işi yapmanın yarısı o işe başlmaktır.
+1 Gün Sigarasız
+2 Gün Sigarasız
+3 Gün Sigarasız
+4 Gün Sigarasız
+100 saat Sigarasız
+İçilmeyen 20 Sigara
+İçilmeyen 50 Sigara
+Direnç gösterilen Cravings 10
+Direnç gösterilen Cravings 25
+İlk günlüğünü girdin

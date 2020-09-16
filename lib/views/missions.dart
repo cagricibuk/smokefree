@@ -13,11 +13,13 @@ _icon(a) {
   if (a == "false")
     return Icon(
       Icons.check_box_outline_blank_outlined,
+      color: Colors.red,
       size: 60,
     );
   else
     return Icon(
       Icons.check_box,
+      color: Colors.green,
       size: 60,
     );
 }

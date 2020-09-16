@@ -25,7 +25,10 @@ class _FagerStromState extends State<FagerStrom> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text("Fagerstrom Analiz"),
+        title: Text(
+          "Fagerstrom Analiz",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
