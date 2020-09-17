@@ -14,8 +14,11 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'basariModel.dart';
 import 'helper/db_helper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import 'helper/db_helperBasari.dart';
 
 void main() => runApp(App());
 
@@ -222,6 +225,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Future<List<KayitModel>> liste = fetchBilgilerFromDatabase();
 
   TextEditingController _textFieldController = TextEditingController();
+  Future<List<BasariModel>> fetchBadgesFromDatabase() async {
+    var dbHelper = DBHelperBasari();
+
+    Future<List<BasariModel>> bilgiler = dbHelper.getBasari();
+
+    return bilgiler;
+  }
 
   _openPopup(context) {
     Alert(
@@ -982,24 +992,70 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             RaisedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => Badges()));
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 200,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Latest Achievements",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ],
-                ),
-              ),
-            )
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => Badges()));
+                },
+                child: FutureBuilder<List<BasariModel>>(
+                    future: fetchBadgesFromDatabase(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                "Latest Achievements",
+                                style: TextStyle(fontSize: 25),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Card(
+                                    child: Flexible(
+                                      child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child:
+                                                Text(snapshot.data[0].aciklama),
+                                          )),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: Flexible(
+                                      child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child:
+                                                Text(snapshot.data[1].aciklama),
+                                          )),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: Flexible(
+                                      child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child:
+                                                Text(snapshot.data[2].aciklama),
+                                          )),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    })),
           ]),
         ),
         floatingActionButton: ScaleTransition(

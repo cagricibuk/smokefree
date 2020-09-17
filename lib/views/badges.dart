@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/helper/db_helperBasari.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import '../basariModel.dart';
 
@@ -31,7 +30,7 @@ class _BadgesState extends State<Badges> {
             future: fetchBilgilerFromDatabase(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return new GridView.count(
+                return GridView.count(
                   // Create a grid with 2 columns. If you change the scrollDirection to
                   // horizontal, this produces 2 rows.
                   crossAxisCount: 2,
