@@ -28,6 +28,7 @@ class _BadgesState extends State<Badges> {
         ),
         body: FutureBuilder<List<BasariModel>>(
             future: fetchBilgilerFromDatabase(),
+            // ignore: missing_return
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return GridView.count(

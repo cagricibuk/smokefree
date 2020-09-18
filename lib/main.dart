@@ -992,12 +992,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             RaisedButton(
+                color: Colors.lightGreen,
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => Badges()));
                 },
                 child: FutureBuilder<List<BasariModel>>(
                     future: fetchBadgesFromDatabase(),
+                    // ignore: missing_return
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Container(
@@ -1008,7 +1010,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             children: [
                               Text(
                                 "Latest Achievements",
-                                style: TextStyle(fontSize: 25),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1016,6 +1019,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   Card(
                                     child: Flexible(
                                       child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
                                           height: 100,
                                           width: 100,
                                           child: Padding(

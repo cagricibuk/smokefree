@@ -12,58 +12,6 @@ class SaveFor extends StatefulWidget {
   _SaveForState createState() => _SaveForState();
 }
 
-_openPopup(context) {
-  Alert(
-      context: context,
-      title: "Biriktirme Hedefi",
-      content: Column(
-        children: <Widget>[
-          TextField(
-            controller: adiController,
-            decoration: InputDecoration(
-              labelText: 'Adı',
-            ),
-          ),
-          TextField(
-            controller: aciklamaController,
-            decoration: InputDecoration(
-              labelText: 'Açıklaması',
-            ),
-          ),
-          TextField(
-            controller: fiyatController,
-            decoration: InputDecoration(
-              labelText: 'Fiyatı',
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-          ),
-        ],
-      ),
-      buttons: [
-        DialogButton(
-          onPressed: () {
-            var dbHelper = DBHelperSF();
-            var item = SaveForModel(0, adiController.text,
-                aciklamaController.text, int.parse(fiyatController.text));
-            dbHelper.saveSaveFors(item);
-            print(adiController.text);
-            print(aciklamaController.text);
-            print(int.parse(fiyatController.text));
-            Navigator.pop(context);
-            // ignore: invalid_use_of_protected_member
-            (context as Element).reassemble();
-          },
-          child: Text(
-            "EKLE",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-        ),
-      ]).show();
-}
-
 TextEditingController adiController = TextEditingController();
 TextEditingController aciklamaController = TextEditingController();
 TextEditingController fiyatController = TextEditingController();
@@ -86,6 +34,64 @@ Future<List<KayitModel>> fetchKayitBilgilerFromDatabase() async {
 }
 
 class _SaveForState extends State<SaveFor> {
+  _openPopup(context) {
+    Alert(
+        context: context,
+        title: "Biriktirme Hedefi",
+        content: Column(
+          children: <Widget>[
+            TextField(
+              controller: adiController,
+              decoration: InputDecoration(
+                labelText: 'Adı',
+              ),
+            ),
+            TextField(
+              controller: aciklamaController,
+              decoration: InputDecoration(
+                labelText: 'Açıklaması',
+              ),
+            ),
+            TextField(
+              controller: fiyatController,
+              decoration: InputDecoration(
+                //      hintText: "0 dan büyük olmalıdır",
+                labelText: 'Fiyatı',
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+            ),
+          ],
+        ),
+        buttons: [
+          DialogButton(
+            onPressed: () {
+              if ((int.parse(fiyatController.text)) < 1) {
+                fiyatController.text = "0 degeri uygun degildir";
+              } else {
+                var dbHelper = DBHelperSF();
+                var item = SaveForModel(0, adiController.text,
+                    aciklamaController.text, int.parse(fiyatController.text));
+                dbHelper.saveSaveFors(item);
+                adiController.text = "";
+                aciklamaController.text = "";
+                fiyatController.text = "";
+
+                Navigator.pop(context);
+                // ignore: invalid_use_of_protected_member
+                (context as Element).reassemble();
+              }
+            },
+            child: Text(
+              "EKLE",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ]).show();
+  }
+
   DBHelperSF dbHelper;
 
   List fiyats;
@@ -243,7 +249,6 @@ class _SaveForState extends State<SaveFor> {
                                               // ignore: missing_return
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
-                                                  print(index1.fiyat);
                                                   return CircularStepProgressIndicator(
                                                     totalSteps: index1.fiyat,
                                                     currentStep: (DateTime.now()
