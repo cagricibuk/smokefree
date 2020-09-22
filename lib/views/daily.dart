@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/dailyModel.dart';
 import 'package:iknow/helper/db_helperDaily.dart';
-import 'package:calendarro/calendarro.dart';
 
 class Daily extends StatefulWidget {
   @override
@@ -43,27 +42,6 @@ class _DailyState extends State<Daily> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Card(
-              child: Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height / 2.3,
-                      child: Calendarro(
-                        startDate: DateTime(2020, 1, 1),
-                        endDate: DateTime(2021, 1, 1),
-                        selectedDates: [DateTime.now(), DateTime(2020, 8, 19)],
-                        selectionMode: SelectionMode.MULTI,
-                        displayMode: DisplayMode.MONTHS,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             Container(
               height: 520,
               child: FutureBuilder<List<DailyModel>>(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/cravings.dart';
-import 'package:iknow/views/daily.dart';
 import 'package:iknow/views/missions.dart';
+import 'package:iknow/views/takvimAna.dart';
 import 'main.dart';
 
 // ignore: must_be_immutable
@@ -14,7 +14,7 @@ class AnaSayfa extends StatefulWidget {
 
 class _AnaSayfaState extends State<AnaSayfa> {
   int _currentIndex = 0;
-  final List<Widget> _children = [HomePage(), Daily(), Cravings(), Missions()];
+  final List<Widget> _children = [HomePage(), MyApp(), Cravings(), Missions()];
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;

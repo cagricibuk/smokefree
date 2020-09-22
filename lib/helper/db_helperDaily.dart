@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' as io;
+import 'package:iknow/views/daily.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -75,6 +76,23 @@ class DBHelperDaily {
       }
     }
     return dailyList;
+  }
+
+//only dates
+  Future<List<DailyModel>> getOnlyDates() async {
+    var dbClient = await db;
+    List<Map> maps = await dbClient.query(TABLE, columns: [DATE, ICTIMI]);
+    //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
+    List<DailyModel> dailyList = [];
+    if (maps.length > 0) {
+      // for (int i = 0; i < maps.length; i++) {
+      //   workouts.add(WorkOut.fromMap(maps[i]));
+      // }
+      for (int i = maps.length - 1; i >= 0; i--) {
+        dailyList.add(DailyModel.fromMap(maps[i]));
+      }
+    }
+    return dailyList.toList();
   }
 
   Future<int> deleteDaily(int id) async {

@@ -22,13 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety"
-  calendarro:
-    dependency: "direct dev"
-    description:
-      name: calendarro
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   characters:
     dependency: transitive
     description:
@@ -118,6 +111,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_date_pickers:
+    dependency: "direct dev"
+    description:
+      name: flutter_date_pickers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.7"
   flutter_holo_date_picker:
     dependency: "direct dev"
     description:
@@ -125,6 +125,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
