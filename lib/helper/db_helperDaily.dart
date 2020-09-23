@@ -81,7 +81,8 @@ class DBHelperDaily {
 //only dates
   Future<List<DailyModel>> getOnlyDates() async {
     var dbClient = await db;
-    List<Map> maps = await dbClient.query(TABLE, columns: [DATE, ICTIMI]);
+    List<Map> maps = await dbClient
+        .query(TABLE, columns: [ID, DATE, ICTIMI, CRAVINGS, ZORLANMA, KACTANE]);
     //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
     List<DailyModel> dailyList = [];
     if (maps.length > 0) {

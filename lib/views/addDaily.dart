@@ -16,7 +16,8 @@ class _AddDailyState extends State<AddDaily> {
   TextEditingController _textFieldController = TextEditingController();
   double _currentSliderValue = 20;
   var radioValue1;
-  var datePicked = new DateTime.now();
+  var datePicked = new DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day);
   var counter = 0;
   int sigara;
   var kacSigara = false;
@@ -84,7 +85,8 @@ class _AddDailyState extends State<AddDaily> {
                       setState(() async {
                         datePicked = await DatePicker.showSimpleDatePicker(
                           context,
-                          initialDate: DateTime.now(),
+                          initialDate: DateTime(DateTime.now().year,
+                              DateTime.now().month, DateTime.now().day),
                           firstDate: DateTime(1990),
                           lastDate: DateTime(2030),
                           dateFormat: "yyyy-MM-dd",
