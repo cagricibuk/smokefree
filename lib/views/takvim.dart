@@ -195,7 +195,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
                     setState(() {
                       dbHelper.deleteDaily(idler[indis]);
                       widget.events.clear();
-                      eventDetailsSetup();
+                      //eventDetailsSetup();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
