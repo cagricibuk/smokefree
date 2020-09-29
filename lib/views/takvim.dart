@@ -62,8 +62,10 @@ class _DayPickerPageState extends State<DayPickerPage> {
   DateTime _lastDate;
   Color selectedDateStyleColor = Colors.blue;
   Color selectedSingleDateDecorationColor;
+  int takvimWidth = 72;
   var _currentDate = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day - 2);
+
   var _ictimi;
   var _gosterAltbar = false;
   var _id;
@@ -135,83 +137,91 @@ class _DayPickerPageState extends State<DayPickerPage> {
         ),
         Visibility(
           visible: _gosterAltbar,
-          child: Container(
-            height: MediaQuery.of(context).size.height / 4,
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    Text("Günün bilgileri"),
-                    Card(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 20,
-                            color: Colors.lightGreen,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(4, 2, 0, 0),
-                              child: Text(
-                                "${aylar[_currentDate.month - 1]} ${_currentDate.year}",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
+          child: Card(
+            elevation: 2,
+            child: Container(
+              color: Colors.grey[100],
+              height: MediaQuery.of(context).size.height / 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Card(
+                        elevation: 5,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 90,
+                              height: 30,
+                              color: Colors.lightGreen,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 2, 0, 0),
+                                child: Text(
+                                  "${aylar[_currentDate.month - 1]} ${_currentDate.year}",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 60,
-                            height: 45,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
-                              child: Text(
-                                "${_currentDate.day}",
-                                style: TextStyle(fontSize: 26),
+                            Container(
+                              width: takvimWidth.toDouble(),
+                              height: 60,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                                child: Text(
+                                  "${_currentDate.day}",
+                                  style: TextStyle(fontSize: 40),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    if (_kactane != null) Text("sigara sayisi $_kactane"),
-                    if (_cravings != null)
-                      Text("cravings ${_cravings.toString()}"),
-                    if (_zorlanma != null)
-                      Text("zorlanma puanı ${_zorlanma.toString()}"),
-                    if (_currentDate != null) Text(_currentDate.toString()),
-                    if (_ictimi != null) Text(_ictimi),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    if (_id != null) Text("id ${_id.toString()}"),
-                  ],
-                ),
-                FlatButton(
-                  color: Colors.red,
-                  onPressed: () {
-                    setState(() {
-                      dbHelper.deleteDaily(idler[indis]);
-                      widget.events.clear();
-                      //eventDetailsSetup();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AnaSayfa(
-                            indis: 1,
-                          ),
+                          ],
                         ),
-                      );
-                    });
-                  },
-                  child: Text(
-                    "Günlüğü Sil",
-                    style: TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (_kactane != null)
+                        Text("İçilen Sigara Sayisi: $_kactane"),
+                      if (_cravings != null)
+                        Text("Cravings ${_cravings.toString()}"),
+                      if (_zorlanma != null)
+                        Text("Zorlanma Derecesi ${_zorlanma.toString()}"),
+                      //if (_currentDate != null) Text(_currentDate.toString()),
+                      if (_ictimi != null) Text(_ictimi),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      if (_id != null) Text("id ${_id.toString()}"),
+                    ],
+                  ),
+                  FlatButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      setState(() {
+                        dbHelper.deleteDaily(idler[indis]);
+                        widget.events.clear();
+                        //eventDetailsSetup();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnaSayfa(
+                              indis: 1,
+                            ),
+                          ),
+                        );
+                      });
+                    },
+                    child: Text(
+                      "Günlüğü Sil",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -228,6 +238,10 @@ class _DayPickerPageState extends State<DayPickerPage> {
         indis = etkinlikler.indexOf(_selectedDate);
         print(indis);
         _currentDate = etkinlikler[indis];
+        if (etkinlikler[indis].day.toInt() < 10)
+          takvimWidth = 50;
+        else
+          takvimWidth = 80;
         _ictimi = icildiBilgileri[indis];
         _id = idler[indis];
         _kactane = tane[indis];

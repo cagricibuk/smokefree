@@ -7,6 +7,7 @@ import 'package:iknow/views/addDaily.dart';
 import 'package:iknow/views/badges.dart';
 import 'package:iknow/views/fagerstrom.dart';
 import 'package:iknow/views/kayitScreen.dart';
+import 'package:iknow/views/saglikIlerlemen.dart';
 import 'package:iknow/views/saveFor.dart';
 import 'package:iknow/views/splashscreen.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -541,7 +542,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14.0),
                         ),
-                        onPressed: null,
+                        onPressed: () {},
                         child: Text(
                           "EXPLORE",
                           style: TextStyle(color: Colors.white),
@@ -567,7 +568,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
               child: RaisedButton(
                 color: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  print("saglik ilerleme");
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => SaglikIlerlemen()));
+                },
                 child: Column(
                   children: [
                     SizedBox(

@@ -48,6 +48,7 @@ dev_dependencies:
   rflutter_alert: ^1.0.3
   fl_chart: ^0.11.1
   flutter_date_pickers: ^0.1.7
+  flutter_local_notifications: ^1.4.4+4
 
 
 
