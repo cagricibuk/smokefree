@@ -38,23 +38,27 @@ class _BadgesState extends State<Badges> {
 
                   children: List.generate(snapshot.data.length, (index) {
                     return Card(
-                        child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            snapshot.data[index].id.toString(),
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                          Text(
-                            snapshot.data[index].aciklama,
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ],
+                        child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              snapshot.data[index].id.toString(),
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                            Text(
+                              snapshot.data[index].aciklama,
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                          ],
+                        ),
                       ),
                     ));
                   }),
                 );
+              } else {
+                Text(snapshot.error);
               }
             }));
   }

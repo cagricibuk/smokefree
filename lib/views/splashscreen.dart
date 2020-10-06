@@ -56,7 +56,7 @@ class SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 50,
-                    color: Colors.yellowAccent[800]),
+                    color: Colors.blueAccent[800]),
               ),
             ),
           ),
@@ -69,7 +69,7 @@ class SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.yellowAccent[800]),
+                    color: Colors.blueAccent[800]),
               ),
             ),
           ),

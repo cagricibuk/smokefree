@@ -19,7 +19,7 @@ class _FagerStromState extends State<FagerStrom> {
   bool goster = false;
   int eksik = 0;
 
-  List<int> cevaplar = List<int>();
+  List cevaplar = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +78,7 @@ class _FagerStromState extends State<FagerStrom> {
                                 setState(() {
                                   _value = value;
                                   cevaplar.add(value);
-                                  print("value1 $_value");
+                                  print("value1 $value");
                                 });
                               }),
                         ],

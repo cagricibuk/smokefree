@@ -118,29 +118,16 @@ class _SaglikIlerlemenState extends State<SaglikIlerlemen> {
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  SizedBox(height: 20),
-                  Text(
-                    basliklar[index],
-                    style: TextStyle(fontSize: 26),
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      child: Center(child: Text(aciklamalar[index]))),
                   SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
-                  Text(
-                    kalanSureler[index],
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(height: 20),
                   CircularStepProgressIndicator(
                     totalSteps: 100,
                     currentStep: sonuclama(int.parse(
                         ((100 * gecenGun) / hedefGunler[index])
                             .toStringAsFixed(0))),
                     stepSize: 10,
-                    selectedColor: Colors.lightGreen,
+                    selectedColor: Colors.blue,
                     unselectedColor: Colors.grey[200],
                     padding: 0,
                     width: 150,
@@ -156,6 +143,24 @@ class _SaglikIlerlemenState extends State<SaglikIlerlemen> {
                         style: TextStyle(fontSize: 33),
                       ),
                     ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    basliklar[index],
+                    style: TextStyle(fontSize: 26),
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      child: Center(child: Text(aciklamalar[index]))),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    kalanSureler[index],
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               );

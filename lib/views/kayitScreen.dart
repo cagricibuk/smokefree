@@ -19,7 +19,7 @@ class _KayitScreenState extends State<KayitScreen> {
               Container(
                 child: FlatButton(
                   child: Text("Şimdilik geç",
-                      style: TextStyle(color: Colors.lightGreen)),
+                      style: TextStyle(color: Colors.blue)),
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (_) => KayitSoru()));

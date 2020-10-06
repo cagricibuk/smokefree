@@ -33,7 +33,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Introduction screen',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.lightGreen),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: SplashScreen(), //ilk sayfa
     );
   }
@@ -108,7 +108,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           //     'FooButton',
           //     style: TextStyle(color: Colors.white),
           //   ),
-          //   color: Colors.lightGreen,
+          //   color: Colors.blue,
           //   shape: RoundedRectangleBorder(
           //     borderRadius: BorderRadius.circular(8.0),
           //   ),
@@ -161,7 +161,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         size: Size(10.0, 10.0),
         color: Color(0xFFBDBDBD),
         activeSize: Size(22.0, 10.0),
-        activeColor: Colors.lightGreen,
+        activeColor: Colors.blue,
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
@@ -176,6 +176,20 @@ Future<List<KayitModel>> fetchBilgilerFromDatabase() async {
   Future<List<KayitModel>> bilgiler = dbHelper.getBilgiler();
 
   return bilgiler;
+}
+
+int sonuclama(sayi) {
+  if (sayi > 100) {
+    return 100;
+  } else
+    return sayi;
+}
+
+String sonuclamaYazisi(sayi) {
+  if (sayi > 100)
+    return "%100";
+  else
+    return "%$sayi";
 }
 
 class HomePage extends StatefulWidget {
@@ -271,7 +285,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
-          backgroundColor: Colors.lightGreen, // status bar color
+          backgroundColor: Colors.blue, // status bar color
           title: const Text(
             'Dashboard',
             style: TextStyle(
@@ -361,10 +375,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
                     return Container(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 20,
-                          ),
                           Text(
                             "Sigarasız Geçen Gün",
                             style: TextStyle(fontSize: 26, color: Colors.white),
@@ -380,23 +392,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 .inDays
                                 .toString(),
                             style: TextStyle(fontSize: 50, color: Colors.white),
-                          ),
-                          SizedBox(
-                            height: 80,
-                          ),
-                          Container(
-                            height: 40,
-                            width: 120,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14.0),
-                              ),
-                              onPressed: null,
-                              child: Text(
-                                "EXPLORE",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
                           ),
                         ],
                       ),
@@ -425,14 +420,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     future: fetchBilgilerFromDatabase(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                      } else if (snapshot.hasError) {
+                      } else {
                         return new Text("${snapshot.error}");
                       }
                       return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 20,
-                          ),
                           Text(
                             "Paradan Tasarruf",
                             style: TextStyle(fontSize: 26, color: Colors.black),
@@ -442,8 +435,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                           Text(
                             "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1).toString()}",
-                            style: TextStyle(
-                                fontSize: 50, color: Colors.lightGreen),
+                            style: TextStyle(fontSize: 50, color: Colors.blue),
                           ),
                           SizedBox(
                             height: 30,
@@ -457,33 +449,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                           Text(
                             "₺${((snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20) * 365).toStringAsFixed(1).toString()}",
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.lightGreen),
+                            style: TextStyle(fontSize: 25, color: Colors.blue),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            height: 40,
-                            width: 120,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14.0),
-                              ),
-                              onPressed: null,
-                              child: Text(
-                                "EXPLORE",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
                         ],
                       );
                     }),
               ),
             ),
             Container(
-              height: 230,
+              height: 200,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 boxShadow: [
@@ -496,7 +470,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ],
               ),
               child: RaisedButton(
-                color: Colors.lightGreen,
+                color: Colors.blue,
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => SaveFor()));
@@ -532,29 +506,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      height: 40,
-                      width: 120,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14.0),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          "EXPLORE",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
             ),
             Container(
-              height: 300,
+              height: 245,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 boxShadow: [
@@ -569,7 +526,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               child: RaisedButton(
                 color: Colors.white,
                 onPressed: () {
-                  print("saglik ilerleme");
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => SaglikIlerlemen()));
                 },
@@ -599,12 +555,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 future: fetchBilgilerFromDatabase(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                  } else if (snapshot.hasError) {
+                                  } else {
                                     return new Text("${snapshot.error}");
                                   }
                                   return CircularStepProgressIndicator(
                                     totalSteps: 100,
-                                    currentStep: (((DateTime.now()
+                                    currentStep: sonuclama(((DateTime.now()
                                                     .difference(DateTime.parse(
                                                         snapshot.data[0]
                                                             .birakmaDate))
@@ -613,7 +569,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             72)
                                         .toInt(),
                                     stepSize: 10,
-                                    selectedColor: Colors.lightGreen,
+                                    selectedColor: Colors.blue,
                                     unselectedColor: Colors.grey[200],
                                     padding: 0,
                                     width: 80,
@@ -621,9 +577,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     selectedStepSize: 15,
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          15, 15, 0, 0),
+                                          8, 15, 0, 0),
                                       child: Text(
-                                        (((DateTime.now()
+                                        sonuclamaYazisi((((DateTime.now()
                                                         .difference(DateTime
                                                             .parse(snapshot
                                                                 .data[0]
@@ -631,8 +587,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         .inDays) *
                                                     100) ~/
                                                 72)
-                                            .toInt()
-                                            .toString(),
+                                            .toInt()),
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),
@@ -655,12 +610,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 future: fetchBilgilerFromDatabase(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                  } else if (snapshot.hasError) {
+                                  } else {
                                     return new Text("${snapshot.error}");
                                   }
                                   return CircularStepProgressIndicator(
                                     totalSteps: 100,
-                                    currentStep: (((DateTime.now()
+                                    currentStep: sonuclama(((DateTime.now()
                                                     .difference(DateTime.parse(
                                                         snapshot.data[0]
                                                             .birakmaDate))
@@ -669,7 +624,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             24)
                                         .toInt(),
                                     stepSize: 10,
-                                    selectedColor: Colors.lightGreen,
+                                    selectedColor: Colors.blue,
                                     unselectedColor: Colors.grey[200],
                                     padding: 0,
                                     width: 80,
@@ -677,9 +632,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     selectedStepSize: 15,
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          15, 15, 0, 0),
+                                          6, 15, 0, 0),
                                       child: Text(
-                                        (((DateTime.now()
+                                        sonuclamaYazisi((((DateTime.now()
                                                         .difference(DateTime
                                                             .parse(snapshot
                                                                 .data[0]
@@ -687,8 +642,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         .inDays) *
                                                     100) ~/
                                                 24)
-                                            .toInt()
-                                            .toString(),
+                                            .toInt()),
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),
@@ -709,12 +663,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 future: fetchBilgilerFromDatabase(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                  } else if (snapshot.hasError) {
+                                  } else {
                                     return new Text("${snapshot.error}");
                                   }
                                   return CircularStepProgressIndicator(
                                     totalSteps: 100,
-                                    currentStep: (((DateTime.now()
+                                    currentStep: sonuclama(((DateTime.now()
                                                     .difference(DateTime.parse(
                                                         snapshot.data[0]
                                                             .birakmaDate))
@@ -723,7 +677,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             48)
                                         .toInt(),
                                     stepSize: 10,
-                                    selectedColor: Colors.lightGreen,
+                                    selectedColor: Colors.blue,
                                     unselectedColor: Colors.grey[200],
                                     padding: 0,
                                     width: 80,
@@ -731,9 +685,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     selectedStepSize: 15,
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          15, 15, 0, 0),
+                                          6, 15, 0, 0),
                                       child: Text(
-                                        (((DateTime.now()
+                                        sonuclamaYazisi((((DateTime.now()
                                                         .difference(DateTime
                                                             .parse(snapshot
                                                                 .data[0]
@@ -741,8 +695,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         .inDays) *
                                                     100) ~/
                                                 48)
-                                            .toInt()
-                                            .toString(),
+                                            .toInt()),
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),
@@ -754,23 +707,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: 40,
-                      width: 120,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14.0),
-                        ),
-                        onPressed: null,
-                        child: Text(
-                          "EXPLORE",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -900,7 +836,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     future: fetchBilgilerFromDatabase(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                      } else if (snapshot.hasError) {
+                      } else {
                         return new Text("${snapshot.error}");
                       }
                       return Container(
@@ -937,8 +873,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                 snapshot.data[0].gunlukIcme)
                                             .toString(),
                                         style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.lightGreen),
+                                            fontSize: 20, color: Colors.blue),
                                         maxLines: 1,
                                       ),
                                     ],
@@ -957,8 +892,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       Text(
                                         "0",
                                         style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.lightGreen),
+                                            fontSize: 20, color: Colors.blue),
                                       ),
                                     ],
                                   ),
@@ -982,8 +916,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             .toString(),
                                         maxLines: 1,
                                         style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.lightGreen),
+                                            fontSize: 20, color: Colors.blue),
                                       ),
                                     ],
                                   ),
@@ -997,7 +930,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             RaisedButton(
-                color: Colors.lightGreen,
+                color: Colors.blue,
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => Badges()));
@@ -1066,7 +999,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ],
                           ),
                         );
-                      }
+                      } else
+                        Text(snapshot.error);
                     })),
           ]),
         ),

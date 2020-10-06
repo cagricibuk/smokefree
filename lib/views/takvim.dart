@@ -104,7 +104,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
   Widget build(BuildContext context) {
     // add selected colors to default settings
     dp.DatePickerStyles styles = dp.DatePickerRangeStyles(
-        currentDateStyle: TextStyle(color: Colors.yellow),
+        currentDateStyle: TextStyle(color: Colors.blue),
         selectedDateStyle: Theme.of(context)
             .accentTextTheme
             .bodyText1
@@ -155,7 +155,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
                             Container(
                               width: 90,
                               height: 30,
-                              color: Colors.lightGreen,
+                              color: Colors.blue,
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(4, 2, 0, 0),
                                 child: Text(

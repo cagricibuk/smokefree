@@ -95,7 +95,7 @@ class _FagerSonucState extends State<FagerSonuc> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  color: Colors.lightGreen,
+                  color: Colors.green,
                   onPressed: () => {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (_) => FagerStrom())),

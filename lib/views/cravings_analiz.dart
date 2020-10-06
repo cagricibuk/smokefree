@@ -17,7 +17,7 @@ class BarChartSample3State extends State<BarChartSample3> {
         children: [
           Card(
             child: Container(
-              color: Colors.lightGreen,
+              color: Colors.blue,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
@@ -37,7 +37,7 @@ class BarChartSample3State extends State<BarChartSample3> {
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4)),
-                      color: Colors.lightGreen,
+                      color: Colors.blue,
                       child: BarChart(
                         BarChartData(
                           alignment: BarChartAlignment.spaceAround,

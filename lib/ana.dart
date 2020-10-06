@@ -98,6 +98,8 @@ class _AnaSayfaState extends State<AnaSayfa> {
     return Scaffold(
       body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.white70,
+        backgroundColor: Colors.blue,
         elevation: 8,
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, //
@@ -121,7 +123,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
           ),
         ],
 
-        selectedItemColor: Colors.lightGreen,
+        selectedItemColor: Colors.white,
       ),
     );
   }

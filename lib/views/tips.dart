@@ -101,8 +101,6 @@ class _TipsState extends State<Tips> {
                         )),
                   );
                 });
-          } else if (snapshot.data.length == 0) {
-            return new Text("No Data found");
           } else
             return Container(
               child: Text("Henüz gönderi yok"),

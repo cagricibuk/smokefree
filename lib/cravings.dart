@@ -65,7 +65,7 @@ class _CravingsState extends State<Cravings> {
               Container(
                   width: MediaQuery.of(context).size.width / 2 - 20,
                   child: RaisedButton(
-                    color: Colors.lightGreen,
+                    color: Colors.blue,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
@@ -80,7 +80,7 @@ class _CravingsState extends State<Cravings> {
               Container(
                   width: MediaQuery.of(context).size.width / 2 - 20,
                   child: RaisedButton(
-                    color: Colors.lightGreen,
+                    color: Colors.blue,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () => {},
@@ -120,7 +120,7 @@ class _CravingsState extends State<Cravings> {
                   Container(
                       width: MediaQuery.of(context).size.width / 2 - 80,
                       child: RaisedButton(
-                        color: Colors.lightGreen,
+                        color: Colors.blue,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
@@ -147,7 +147,7 @@ class _CravingsState extends State<Cravings> {
               scrollDirection: Axis.horizontal,
               children: new List.generate(headerList.length, (int index) {
                 return new Card(
-                  color: Colors.lightGreen[index * 100],
+                  color: Colors.blue[index * 100],
                   child: new Container(
                     width: 150.0,
                     height: 50.0,

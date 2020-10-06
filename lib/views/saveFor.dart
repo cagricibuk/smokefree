@@ -138,7 +138,7 @@ class _SaveForState extends State<SaveFor> {
                           }
                           return Text(
                             "0/${snapshot.data.length}",
-                            style: TextStyle(color: Colors.lightGreen),
+                            style: TextStyle(color: Colors.blue),
                           );
                         },
                       ),
@@ -159,7 +159,7 @@ class _SaveForState extends State<SaveFor> {
                           }
                           return Text(
                             "₺${(snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20).toString()}",
-                            style: TextStyle(color: Colors.lightGreen),
+                            style: TextStyle(color: Colors.blue),
                           );
                         },
                       )
@@ -180,7 +180,7 @@ class _SaveForState extends State<SaveFor> {
                           }
                           return Text(
                             "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1)}",
-                            style: TextStyle(color: Colors.lightGreen),
+                            style: TextStyle(color: Colors.blue),
                           );
                         },
                       ),
@@ -263,8 +263,7 @@ class _SaveForState extends State<SaveFor> {
                                                             .data[0].fiyat ~/
                                                         20,
                                                     stepSize: 10,
-                                                    selectedColor:
-                                                        Colors.lightGreen,
+                                                    selectedColor: Colors.blue,
                                                     unselectedColor:
                                                         Colors.grey[200],
                                                     padding: 0,
@@ -277,7 +276,7 @@ class _SaveForState extends State<SaveFor> {
                                                       size: 50,
                                                     ),
                                                   );
-                                                } else if (snapshot.hasError) {
+                                                } else {
                                                   return new Text(
                                                       "${snapshot.error}");
                                                 }
@@ -343,7 +342,7 @@ class _SaveForState extends State<SaveFor> {
           Icons.add,
           color: Colors.white,
         ),
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Colors.blue,
       ),
     );
   }

@@ -95,7 +95,7 @@ class _DailyState extends State<Daily> {
                                                 Container(
                                                   width: 60,
                                                   height: 20,
-                                                  color: Colors.lightGreen,
+                                                  color: Colors.blue,
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .fromLTRB(4, 2, 0, 0),
