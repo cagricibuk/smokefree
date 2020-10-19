@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iknow/services/auth.dart';
 import 'package:iknow/views/kayitSoru.dart';
 
 class KayitScreen extends StatefulWidget {
@@ -20,9 +22,9 @@ class _KayitScreenState extends State<KayitScreen> {
                 child: FlatButton(
                   child: Text("Şimdilik geç",
                       style: TextStyle(color: Colors.blue)),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => KayitSoru()));
+                  onPressed: () async {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (_) => KayitSoru(kayitSekli: 0)));
                   },
                 ),
               ),
@@ -96,7 +98,10 @@ class _KayitScreenState extends State<KayitScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 color: Color(0xffDB4437),
-                onPressed: () => {},
+                onPressed: () async {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (_) => KayitSoru(kayitSekli: 1)));
+                },
                 child: Text(
                   "GOOGLE İLE BAĞLA",
                   style: TextStyle(color: Colors.white),

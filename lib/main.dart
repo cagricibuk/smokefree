@@ -18,10 +18,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'basariModel.dart';
 import 'helper/db_helper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'helper/db_helperBasari.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() => runApp(App());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override
@@ -48,8 +54,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    SharedPreferencesHelper.setRememberMeValue(true);
-
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => KayitScreen()),
     );
@@ -199,6 +203,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   AnimationController _hideFabAnimation;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   initState() {
     super.initState();
@@ -1025,9 +1031,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     }),
                 IconButton(
                     icon: Icon(Icons.trending_down, color: Colors.white),
-                    onPressed: () {
-                      print('Cravings');
-                    })
+                    onPressed: () {})
               ]),
         ),
       ),

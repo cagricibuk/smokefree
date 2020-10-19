@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "741095127618",
+    "firebase_url": "https://iknow-smoke-free.firebaseio.com",
+    "project_id": "iknow-smoke-free",
+    "storage_bucket": "iknow-smoke-free.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741095127618:android:f22855e43b4c61f0148bdb",
+        "android_client_info": {
+          "package_name": "com.iknow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741095127618-r54cabias5facrl2p0cqaf32om9925qc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASOM4DZPrVsvJe2WIB1HZLhUxMPGae1UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741095127618-r54cabias5facrl2p0cqaf32om9925qc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

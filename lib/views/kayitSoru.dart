@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:iknow/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -10,19 +10,27 @@ import 'package:iknow/helper/db_helper.dart';
 import 'package:iknow/helper/db_helperBasari.dart';
 import 'package:iknow/helper/db_helperMissions.dart';
 import 'package:iknow/helper/db_helperTips.dart';
+import 'package:iknow/helper/shared_preference.dart';
 import 'package:iknow/kayitModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:iknow/missionModel.dart';
 import 'package:intl/intl.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../tipsModel.dart';
 
 class KayitSoru extends StatefulWidget {
+  int kayitSekli;
+  KayitSoru({this.kayitSekli});
   @override
   _KayitSoruState createState() => _KayitSoruState();
 }
 
 class _KayitSoruState extends State<KayitSoru> {
+  final AuthService _auth = AuthService();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   DBHelper dbHelper;
   var dbHelperBasari = DBHelperBasari();
   var dbhelperTips = DBHelperTips();
@@ -405,26 +413,98 @@ class _KayitSoruState extends State<KayitSoru> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   color: Colors.green,
-                  onPressed: () {
-                    var yeniKayit = KayitModel(
-                      adiController.text,
-                      soyadiController.text,
-                      ilController.text,
-                      int.parse(fiyatController.text),
-                      int.parse(adetController.text),
-                      int.parse(yilController.text),
-                      datePicked.toString(),
-                      datePicked2.toString(),
-                      0,
-                    );
+                  onPressed: () async {
+                    if (widget.kayitSekli == 0) {
+                      var yeniKayit = KayitModel(
+                        adiController.text,
+                        soyadiController.text,
+                        ilController.text,
+                        int.parse(fiyatController.text),
+                        int.parse(adetController.text),
+                        int.parse(yilController.text),
+                        datePicked.toString(),
+                        datePicked2.toString(),
+                        0,
+                      );
+                      dynamic result = await _auth.sigInAnon();
+                      if (result == null) {
+                        print("error sign in");
+                      } else {
+                        print("signed in");
+                        print(result);
+                      }
+                      final User user = auth.currentUser;
+                      final uid = user.uid;
+                      print(uid);
+                      firestore
+                          .collection('users')
+                          .doc(uid)
+                          .set({
+                            'adi': adiController.text, // John Doe
+                            'soyadi': soyadiController.text,
+                            "il": ilController.text,
+                            "fiyat": int.parse(fiyatController.text),
+                            "gunlukİctigi": int.parse(adetController.text),
+                            "kacYildir": int.parse(yilController.text),
+                            "dogumTarih": datePicked.toString(),
+                            "birakmaTarihi": datePicked2.toString(),
+                          })
+                          .then((value) => print("User Added"))
+                          .catchError(
+                              (error) => print("Failed to add user: $error"));
 
-                    dbHelper.save(yeniKayit);
+                      SharedPreferencesHelper.setRememberMeValue(true);
+                      dbHelper.save(yeniKayit);
 
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => AnaSayfa()),
-                        ModalRoute.withName('/'));
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => AnaSayfa()),
+                          ModalRoute.withName('/'));
+                    }
+                    if (widget.kayitSekli == 1) {
+                      var yeniKayit = KayitModel(
+                        adiController.text,
+                        soyadiController.text,
+                        ilController.text,
+                        int.parse(fiyatController.text),
+                        int.parse(adetController.text),
+                        int.parse(yilController.text),
+                        datePicked.toString(),
+                        datePicked2.toString(),
+                        0,
+                      );
+                      bool res = await AuthService().loginWithGoogle();
+                      if (res == null) print("error logging in with google");
+                      final User user = auth.currentUser;
+                      final uid = user.uid;
+                      print(uid);
+                      firestore
+                          .collection('users')
+                          .doc(uid)
+                          .set({
+                            'adi': adiController.text, // John Doe
+                            'soyadi': soyadiController.text,
+                            "il": ilController.text,
+                            "fiyat": int.parse(fiyatController.text),
+                            "gunlukİctigi": int.parse(adetController.text),
+                            "kacYildir": int.parse(yilController.text),
+                            "dogumTarih": datePicked.toString(),
+                            "birakmaTarihi": datePicked2.toString(),
+                          })
+                          .then((value) => print("User Added"))
+                          .catchError(
+                              (error) => print("Failed to add user: $error"));
+
+                      SharedPreferencesHelper.setRememberMeValue(true);
+                      dbHelper.save(yeniKayit);
+
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => AnaSayfa()),
+                          ModalRoute.withName('/'));
+                    }
                   },
                   child: Text(
                     "Kaydı Tamamla",
