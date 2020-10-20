@@ -20,7 +20,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../tipsModel.dart';
 
 class KayitSoru extends StatefulWidget {
-  int kayitSekli;
+  final int kayitSekli;
   KayitSoru({this.kayitSekli});
   @override
   _KayitSoruState createState() => _KayitSoruState();

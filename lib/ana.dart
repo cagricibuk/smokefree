@@ -73,6 +73,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
         notificationDetails);
   }
 
+  // ignore: missing_return
   Future onSelectNotification(String payLoad) {
     if (payLoad != null) print(payLoad);
   }

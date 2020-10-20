@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/helper/db_helper.dart';
-import 'package:iknow/kayitModel.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class SaglikIlerlemen extends StatefulWidget {
@@ -96,7 +95,6 @@ class _SaglikIlerlemenState extends State<SaglikIlerlemen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     bilgilerSetup();
     //kalanSureHesapla();

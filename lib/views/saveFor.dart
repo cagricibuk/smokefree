@@ -4,8 +4,11 @@ import 'package:iknow/helper/db_helper.dart';
 import 'package:iknow/helper/db_helperSF.dart';
 import 'package:iknow/helper/saveForModel.dart';
 import 'package:iknow/kayitModel.dart';
+import 'package:iknow/services/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SaveFor extends StatefulWidget {
   @override
@@ -16,12 +19,37 @@ TextEditingController adiController = TextEditingController();
 TextEditingController aciklamaController = TextEditingController();
 TextEditingController fiyatController = TextEditingController();
 
+final AuthService _auth = AuthService();
+final FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+List saves;
 Future<List<SaveForModel>> fetchBilgilerFromDatabase() async {
   var dbHelper = DBHelperSF();
 
   Future<List<SaveForModel>> bilgiler = dbHelper.getSaveForBilgiler();
 
   return bilgiler;
+}
+
+////
+void firebaseSetup() async {
+  var dbHelper = DBHelperSF();
+  saves = await dbHelper.getSaveForBilgiler();
+  final User user = auth.currentUser;
+  final uid = user.uid;
+  print(uid);
+  saves.forEach((save) => firestore
+      .collection('users')
+      .doc(uid)
+      .collection("savefors")
+      .doc(save.id.toString())
+      .set({
+        "adi": save.adi,
+        "aciklama": save.aciklama,
+        "fiyat": save.fiyat,
+      })
+      .then((value) => print("SaveFors uploaded"))
+      .catchError((error) => print("Failed to upload SaveFors: $error")));
 }
 
 /////
@@ -99,7 +127,7 @@ class _SaveForState extends State<SaveFor> {
   @override
   void initState() {
     dbHelper = DBHelperSF();
-
+    firebaseSetup();
     super.initState();
   }
 

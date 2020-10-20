@@ -1,6 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:iknow/services/auth.dart';
 import 'package:iknow/views/kayitSoru.dart';
 
 class KayitScreen extends StatefulWidget {

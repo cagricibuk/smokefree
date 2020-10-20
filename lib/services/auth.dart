@@ -8,6 +8,7 @@ class AuthService {
   Future sigInAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
+      // ignore: unused_local_variable
       User user = result.user;
     } catch (e) {
       print(e.toString());

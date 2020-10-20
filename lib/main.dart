@@ -9,6 +9,7 @@ import 'package:iknow/views/fagerstrom.dart';
 import 'package:iknow/views/kayitScreen.dart';
 import 'package:iknow/views/saglikIlerlemen.dart';
 import 'package:iknow/views/saveFor.dart';
+import 'package:iknow/views/settings.dart';
 import 'package:iknow/views/splashscreen.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -310,14 +311,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               },
             ),
             IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => SettingsPage()));
+              },
               icon: Icon(
                 Icons.more_vert,
                 color: Colors.white,

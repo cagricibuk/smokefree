@@ -4,6 +4,9 @@ import 'package:iknow/dailyModel.dart';
 import 'package:iknow/event.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:iknow/helper/db_helperDaily.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iknow/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DayPickerPage extends StatefulWidget {
   final List<Event> events;
@@ -16,6 +19,10 @@ class DayPickerPage extends StatefulWidget {
 
 class _DayPickerPageState extends State<DayPickerPage> {
   var dbHelper = DBHelperDaily();
+  final AuthService _auth = AuthService();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   List aylar = [
     "Oca",
     "Şub",
@@ -38,6 +45,24 @@ class _DayPickerPageState extends State<DayPickerPage> {
     var dbHelper = DBHelperDaily();
     print('=== getBİlgiler() ===');
     notes = await dbHelper.getOnlyDates();
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    print(uid);
+    notes.forEach((note) => firestore
+        .collection('users')
+        .doc(uid)
+        .collection("daily")
+        .doc(note.id.toString())
+        .set({
+          "icildiBilgileri": note.ictimi,
+          "tane": note.kactane,
+          "tarih": note.tarih,
+          "zorlanma": note.zorlanma,
+          "cravings": note.cravings,
+        })
+        .then((value) => print("daily uploaded"))
+        .catchError((error) => print("Failed to upload: $error")));
+
     notes.forEach((note) => etkinlikler.add(DateTime.parse(note.tarih)));
     notes.forEach((note) => idler.add(note.id));
     notes.forEach((note) => icildiBilgileri.add(note.ictimi));
