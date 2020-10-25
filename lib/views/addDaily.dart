@@ -77,7 +77,7 @@ class _AddDailyState extends State<AddDaily> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(datePicked == null
-                      ? "tarih seçilmedi"
+                      ? DateTime.now()
                       : new DateFormat("yMd").format(datePicked).toString()),
                   RaisedButton(
                     child: Text("Günlük Tarihi"),

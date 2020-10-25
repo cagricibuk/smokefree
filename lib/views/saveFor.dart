@@ -4,7 +4,6 @@ import 'package:iknow/helper/db_helper.dart';
 import 'package:iknow/helper/db_helperSF.dart';
 import 'package:iknow/helper/saveForModel.dart';
 import 'package:iknow/kayitModel.dart';
-import 'package:iknow/services/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,7 +18,6 @@ TextEditingController adiController = TextEditingController();
 TextEditingController aciklamaController = TextEditingController();
 TextEditingController fiyatController = TextEditingController();
 
-final AuthService _auth = AuthService();
 final FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 List saves;
@@ -29,6 +27,13 @@ Future<List<SaveForModel>> fetchBilgilerFromDatabase() async {
   Future<List<SaveForModel>> bilgiler = dbHelper.getSaveForBilgiler();
 
   return bilgiler;
+}
+
+int sonuclama(sayi) {
+  if (sayi > 100) {
+    return 100;
+  } else
+    return sayi;
 }
 
 ////

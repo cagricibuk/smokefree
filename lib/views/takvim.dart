@@ -5,7 +5,6 @@ import 'package:iknow/event.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:iknow/helper/db_helperDaily.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:iknow/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DayPickerPage extends StatefulWidget {
@@ -19,10 +18,9 @@ class DayPickerPage extends StatefulWidget {
 
 class _DayPickerPageState extends State<DayPickerPage> {
   var dbHelper = DBHelperDaily();
-  final AuthService _auth = AuthService();
   final FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  var currentItemId;
   List aylar = [
     "Oca",
     "Şub",
@@ -40,6 +38,22 @@ class _DayPickerPageState extends State<DayPickerPage> {
   List notes;
   List icildiBilgileri = [];
   List idler = [];
+  void deleteRecords() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    print(uid);
+
+    firestore
+        .collection('users')
+        .doc(uid)
+        .collection("daily")
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+  }
 
   void eventDetailsSetup() async {
     var dbHelper = DBHelperDaily();
@@ -47,7 +61,7 @@ class _DayPickerPageState extends State<DayPickerPage> {
     notes = await dbHelper.getOnlyDates();
     final User user = auth.currentUser;
     final uid = user.uid;
-    print(uid);
+
     notes.forEach((note) => firestore
         .collection('users')
         .doc(uid)
@@ -225,7 +239,15 @@ class _DayPickerPageState extends State<DayPickerPage> {
                   ),
                   FlatButton(
                     color: Colors.red,
-                    onPressed: () {
+                    onPressed: () async {
+                      final User user = auth.currentUser;
+                      final uid = user.uid;
+                      await firestore
+                          .collection('users')
+                          .doc(uid)
+                          .collection("daily")
+                          .doc(_id.toString())
+                          .delete();
                       setState(() {
                         dbHelper.deleteDaily(idler[indis]);
                         widget.events.clear();

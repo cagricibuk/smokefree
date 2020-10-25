@@ -9,7 +9,7 @@ import 'package:iknow/views/fagerstrom.dart';
 import 'package:iknow/views/kayitScreen.dart';
 import 'package:iknow/views/saglikIlerlemen.dart';
 import 'package:iknow/views/saveFor.dart';
-import 'package:iknow/views/settings.dart';
+import 'package:iknow/views/SettingsView/settings.dart';
 import 'package:iknow/views/splashscreen.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -324,30 +324,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         body: SingleChildScrollView(
           child: Column(children: [
-            // Container(
-            //   padding: new EdgeInsets.all(16.0),
-            //   child: FutureBuilder<List<KayitModel>>(
-            //     future: fetchBilgilerFromDatabase(),
-            //     builder: (context, snapshot) {
-            //       if (snapshot.hasData) {
-            //       } else if (snapshot.hasError) {
-            //         return new Text("${snapshot.error}");
-            //       }
-            //       return Container(
-            //         child: Column(
-            //           children: [
-            //             Text(snapshot.data[0].adi),
-            //             Text(snapshot.data[0].soyadi),
-            //             Text(snapshot.data[0].id.toString()),
-            //             Text(snapshot.data[0].fiyat.toString()),
-            //             Text(snapshot.data[0].gunlukIcme.toString()),
-            //             Text(snapshot.data[0].birakmaDate.toString()),
-            //           ],
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
             Container(
               height: 300,
               width: MediaQuery.of(context).size.width,
@@ -372,33 +348,34 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   future: fetchBilgilerFromDatabase(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      return Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Sigarasız Geçen Gün",
+                              style:
+                                  TextStyle(fontSize: 26, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            //new DateFormat("yMd").format(datePicked)
+                            Text(
+                              DateTime.now()
+                                  .difference(DateTime.parse(
+                                      snapshot.data[0].birakmaDate))
+                                  .inDays
+                                  .toString(),
+                              style:
+                                  TextStyle(fontSize: 50, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
-                      return new Text("${snapshot.error}");
+                      return new Center(child: CircularProgressIndicator());
                     }
-
-                    return Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Sigarasız Geçen Gün",
-                            style: TextStyle(fontSize: 26, color: Colors.white),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          //new DateFormat("yMd").format(datePicked)
-                          Text(
-                            DateTime.now()
-                                .difference(DateTime.parse(
-                                    snapshot.data[0].birakmaDate))
-                                .inDays
-                                .toString(),
-                            style: TextStyle(fontSize: 50, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    );
                   },
                 ),
               ),
@@ -424,7 +401,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                       } else {
-                        return new Text("${snapshot.error}");
+                        return new Center(child: CircularProgressIndicator());
                       }
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -436,10 +413,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           SizedBox(
                             height: 20,
                           ),
-                          Text(
-                            "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1).toString()}",
-                            style: TextStyle(fontSize: 50, color: Colors.blue),
-                          ),
+                          if ((DateTime.now()
+                                          .difference(DateTime.parse(
+                                              snapshot.data[0].birakmaDate))
+                                          .inDays *
+                                      (snapshot.data[0].gunlukIcme *
+                                          snapshot.data[0].fiyat /
+                                          20))
+                                  .toStringAsFixed(1)
+                                  .toString() ==
+                              null)
+                            Center(child: CircularProgressIndicator())
+                          else
+                            Text(
+                              "₺${(DateTime.now().difference(DateTime.parse(snapshot.data[0].birakmaDate)).inDays * (snapshot.data[0].gunlukIcme * snapshot.data[0].fiyat / 20)).toStringAsFixed(1).toString()}",
+                              style:
+                                  TextStyle(fontSize: 50, color: Colors.blue),
+                            ),
                           SizedBox(
                             height: 30,
                           ),
@@ -958,44 +948,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Card(
-                                    child: Flexible(
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          height: 100,
-                                          width: 100,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child:
-                                                Text(snapshot.data[0].aciklama),
-                                          )),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      height: 100,
+                                      width: 100,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: snapshot.data[0].aciklama == null
+                                            ? Text("Loading")
+                                            : Text(
+                                                "${snapshot.data[0].aciklama}"),
+                                      ),
                                     ),
                                   ),
                                   Card(
-                                    child: Flexible(
-                                      child: Container(
-                                          height: 100,
-                                          width: 100,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child:
-                                                Text(snapshot.data[1].aciklama),
-                                          )),
-                                    ),
+                                    child: Container(
+                                        height: 100,
+                                        width: 100,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: snapshot.data[0].aciklama ==
+                                                  null
+                                              ? Text("Loading")
+                                              : Text(
+                                                  "${snapshot.data[0].aciklama}"),
+                                        )),
                                   ),
                                   Card(
-                                    child: Flexible(
-                                      child: Container(
-                                          height: 100,
-                                          width: 100,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child:
-                                                Text(snapshot.data[2].aciklama),
-                                          )),
-                                    ),
+                                    child: Container(
+                                        height: 100,
+                                        width: 100,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: snapshot.data[2].aciklama ==
+                                                  null
+                                              ? Text("Loading")
+                                              : Text(snapshot.data[2].aciklama),
+                                        )),
                                   ),
                                 ],
                               )

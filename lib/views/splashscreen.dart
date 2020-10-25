@@ -37,57 +37,29 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          // Container(
-          //   decoration: BoxDecoration(
-          //       image: DecorationImage(
-          //     image: Image.asset('images/splash.jpg').image,
-          //     fit: BoxFit.cover,
-          //     colorFilter: new ColorFilter.mode(
-          //         Colors.black.withOpacity(0.9), BlendMode.dstATop),
-          //   )),
-          // ),
-          Center(
-            child: Container(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FlutterLogo(
+              size: 80,
+            ),
+            Container(
               child: Text(
-                'Hayatı Yakala!',
+                'Smoke Free',
                 style: TextStyle(
+                    fontFamily: "arial",
                     fontWeight: FontWeight.bold,
                     fontSize: 50,
                     color: Colors.blueAccent[800]),
               ),
             ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Yükleniyor..',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.blueAccent[800]),
-              ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 3,
             ),
-          ),
-
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     Container(
-          //       width: 180.0,
-          //       height: 180.0,
-          //       alignment: Alignment.center,
-          //       decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.all(Radius.circular(24.0)),
-          //       ),
-          //     ),
-          //   ],
-          // )
-        ],
+            CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
