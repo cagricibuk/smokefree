@@ -1,19 +1,21 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:iknow/missionModel.dart';
+import 'package:iknow/models/basariModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DBHelperMissions {
+class DBHelperBasari {
   static Database _db;
 
   static const String ID = 'id';
-  static const String BASLIK = 'baslik';
-  static const String ACIKLAMA = 'aciklama';
-  static const String TAMAMLANDI = 'tamamlandi';
-  static const String TABLE = 'missions';
-  static const String DB_NAME = 'sigara5.db';
+  static const String ACIKLAMA = "aciklama";
+  static const String KATEGORI = "kategori";
+  static const String TARIH = "tarih";
+  static const String KAZANILDI = "kazanildi";
+
+  static const String TABLE = "basari";
+  static const String DB_NAME = 'sigara6.db';
 
   Future<Database> get db async {
     if (_db != null) {
@@ -37,14 +39,14 @@ class DBHelperMissions {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY ,$BASLIK STRING ,$ACIKLAMA STRING ,$TAMAMLANDI BOOL)");
+        "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY,$ACIKLAMA STRING,$KATEGORI STRING,$TARIH TARIH,$KAZANILDI STRING)");
   }
 
 /////////////////////////////
 ///// CREATE TABLE savefor (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, adi STRING, aciklama STRING, fiyat INTEGER);
   /// SAVEFORS
 
-  Future<MissionModel> saveMissions(MissionModel item) async {
+  Future<BasariModel> saveBasari(BasariModel item) async {
     var dbClient = await db;
     item.id = await dbClient.insert(TABLE, item.toMap());
     return item;
@@ -56,70 +58,46 @@ class DBHelperMissions {
     */
   }
 
-  Future<List<MissionModel>> getMissionsBilgiler() async {
+  Future<List<BasariModel>> getBasari() async {
     var dbClient = await db;
     List<Map> maps = await dbClient
-        .query(TABLE, columns: [ID, BASLIK, ACIKLAMA, TAMAMLANDI]);
-    // where: 'isFavorite = ?',
-    // whereArgs: [true]);
+        .query(TABLE, columns: [ID, ACIKLAMA, KATEGORI, TARIH, KAZANILDI]);
     //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-    List<MissionModel> missionlist = [];
+    List<BasariModel> basariList = [];
     if (maps.length > 0) {
       // for (int i = 0; i < maps.length; i++) {
       //   workouts.add(WorkOut.fromMap(maps[i]));
       // }
       for (int i = maps.length - 1; i >= 0; i--) {
-        missionlist.add(MissionModel.fromMap(maps[i]));
+        basariList.add(BasariModel.fromMap(maps[i]));
       }
     }
-    return missionlist;
+    return basariList;
   }
 
-// kategoriye göre çek
-  Future<List<MissionModel>> getMissionsByID(id) async {
+  Future<List<BasariModel>> getLatestBasari() async {
     var dbClient = await db;
-    List<Map> maps = await dbClient.query(TABLE,
-        columns: [ID, BASLIK, ACIKLAMA, TAMAMLANDI],
-        where: 'id = ?',
-        whereArgs: [id]);
+    List<Map> maps =
+        await dbClient.query(TABLE, columns: [ID, ACIKLAMA, KATEGORI, TARIH]);
     //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-    List<MissionModel> tipslist = [];
+    List<BasariModel> basariList = [];
     if (maps.length > 0) {
       // for (int i = 0; i < maps.length; i++) {
       //   workouts.add(WorkOut.fromMap(maps[i]));
       // }
       for (int i = maps.length - 1; i >= 0; i--) {
-        tipslist.add(MissionModel.fromMap(maps[i]));
+        basariList.add(BasariModel.fromMap(maps[i]));
       }
     }
-    return tipslist;
+    return basariList;
   }
 
-  // Future<List<TipsModel>> getTipsBilgilerB() async {
-  //   var dbClient = await db;
-  //   List<Map> maps = await dbClient.query(TABLE,
-  //       columns: [ID, ACIKLAMA, ISFAVORITE, KATEGORI],
-  //       where: 'kategori = ?',
-  //       whereArgs: ["b"]);
-  //   //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-  //   List<TipsModel> tipslist = [];
-  //   if (maps.length > 0) {
-  //     // for (int i = 0; i < maps.length; i++) {
-  //     //   workouts.add(WorkOut.fromMap(maps[i]));
-  //     // }
-  //     for (int i = maps.length - 1; i >= 0; i--) {
-  //       tipslist.add(TipsModel.fromMap(maps[i]));
-  //     }
-  //   }
-  //   return tipslist;
-  // }
-
-  Future<int> deleteMissions(int id) async {
+  Future<int> deleteBasari(int id) async {
     var dbClient = await db;
     return await dbClient.delete(TABLE, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> updateMissions(MissionModel workouts) async {
+  Future<int> updateBasari(BasariModel workouts) async {
     var dbClient = await db;
     return await dbClient.update(TABLE, workouts.toMap(),
         where: '$ID = ?', whereArgs: [workouts.id]);

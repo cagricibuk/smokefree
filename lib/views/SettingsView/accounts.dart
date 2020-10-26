@@ -1,13 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:iknow/models/dailyModel.dart';
+import 'package:iknow/services/db_helperDaily.dart';
+import 'package:iknow/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Accounts extends StatefulWidget {
   @override
   _AccountsState createState() => _AccountsState();
 }
 
-void getAccountsBilgiler() {}
+var dbHelperDaily = DBHelperDaily();
+final FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+void deleteLocalDailyBilgiler() {
+  print("deleting local table");
+  dbHelperDaily.deleteDailyTable();
+}
+
+void getAccountsDailyBilgiler() async {
+  bool res = await AuthService().loginWithGoogle();
+  if (res == null) print("error logging in with google");
+  final User user = auth.currentUser;
+  final uid = user.uid;
+  print(uid);
+
+  QuerySnapshot querySnapshot =
+      await firestore.collection("users").doc(uid).collection('daily').get();
+  var list = querySnapshot.docs;
+  list.forEach((element) {
+    //firebase to local sql database
+    print("buluttan indiriliyor...");
+    var yeniGunluk = DailyModel(
+        int.parse(element.id),
+        element.get('tarih').toString(),
+        element.get('icildiBilgileri').toString(),
+        element.get('tane'),
+        element.get('zorlanma'),
+        element.get('cravings'));
+    dbHelperDaily.saveDaily(yeniGunluk);
+  });
+}
 
 class _AccountsState extends State<Accounts> {
+  @override
+  void initState() {
+    deleteLocalDailyBilgiler();
+    getAccountsDailyBilgiler();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +83,7 @@ class _AccountsState extends State<Accounts> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   color: Color(0xffDB4437),
-                  onPressed: () => {},
+                  onPressed: () {},
                   child: Text(
                     "GOOGLE İLE BAĞLA",
                     style: TextStyle(color: Colors.white),

@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:iknow/helper/db_helperMissions.dart';
-import 'package:iknow/missionModel.dart';
+import 'package:iknow/services/db_helperMissions.dart';
+import 'package:iknow/models/missionModel.dart';
 import 'package:iknow/views/missionPage.dart';
 
 class Missions extends StatefulWidget {

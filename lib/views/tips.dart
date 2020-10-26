@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iknow/helper/db_helperTips.dart';
-import 'package:iknow/tipsModel.dart';
+import 'package:iknow/services/db_helperTips.dart';
+import 'package:iknow/models/tipsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class Tips extends StatefulWidget {

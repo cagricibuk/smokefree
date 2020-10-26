@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
-import 'package:iknow/helper/db_helper.dart';
-import 'package:iknow/helper/db_helperSF.dart';
-import 'package:iknow/helper/saveForModel.dart';
-import 'package:iknow/kayitModel.dart';
+import 'package:iknow/services/db_helper.dart';
+import 'package:iknow/services/db_helperSF.dart';
+import 'package:iknow/models/saveForModel.dart';
+import 'package:iknow/models/kayitModel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

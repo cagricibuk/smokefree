@@ -1,21 +1,23 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:iknow/basariModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DBHelperBasari {
+import '../models/dailyModel.dart';
+
+class DBHelperDaily {
   static Database _db;
 
   static const String ID = 'id';
-  static const String ACIKLAMA = "aciklama";
-  static const String KATEGORI = "kategori";
-  static const String TARIH = "tarih";
-  static const String KAZANILDI = "kazanildi";
-
-  static const String TABLE = "basari";
-  static const String DB_NAME = 'sigara6.db';
+  static const String DATE = 'tarih';
+  static const String DETAY = "detay";
+  static const String ICTIMI = "ictimi";
+  static const String KACTANE = "kactane";
+  static const String ZORLANMA = "zorlanma";
+  static const String CRAVINGS = "cravings";
+  static const String TABLE = "daily";
+  static const String DB_NAME = 'sigara3.db';
 
   Future<Database> get db async {
     if (_db != null) {
@@ -39,16 +41,16 @@ class DBHelperBasari {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY,$ACIKLAMA STRING,$KATEGORI STRING,$TARIH TARIH,$KAZANILDI STRING)");
+        "CREATE TABLE daily ($ID INTEGER PRIMARY KEY,$DATE STRING,$ICTIMI BOOL,$KACTANE INTEGER,$ZORLANMA INTEGER,$CRAVINGS INTEGER)");
   }
 
 /////////////////////////////
 ///// CREATE TABLE savefor (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, adi STRING, aciklama STRING, fiyat INTEGER);
   /// SAVEFORS
 
-  Future<BasariModel> saveBasari(BasariModel item) async {
+  Future<DailyModel> saveDaily(DailyModel item) async {
     var dbClient = await db;
-    item.id = await dbClient.insert(TABLE, item.toMap());
+    item.id = await dbClient.insert("daily", item.toMap());
     return item;
     /*
     await dbClient.transaction((txn) async {
@@ -58,46 +60,52 @@ class DBHelperBasari {
     */
   }
 
-  Future<List<BasariModel>> getBasari() async {
+  Future<List<DailyModel>> getDailyBilgiler() async {
     var dbClient = await db;
     List<Map> maps = await dbClient
-        .query(TABLE, columns: [ID, ACIKLAMA, KATEGORI, TARIH, KAZANILDI]);
+        .query(TABLE, columns: [ID, DATE, ICTIMI, KACTANE, ZORLANMA, CRAVINGS]);
     //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-    List<BasariModel> basariList = [];
+    List<DailyModel> dailyList = [];
     if (maps.length > 0) {
       // for (int i = 0; i < maps.length; i++) {
       //   workouts.add(WorkOut.fromMap(maps[i]));
       // }
       for (int i = maps.length - 1; i >= 0; i--) {
-        basariList.add(BasariModel.fromMap(maps[i]));
+        dailyList.add(DailyModel.fromMap(maps[i]));
       }
     }
-    return basariList;
+    return dailyList;
   }
 
-  Future<List<BasariModel>> getLatestBasari() async {
+//only dates
+  Future<List<DailyModel>> getOnlyDates() async {
     var dbClient = await db;
-    List<Map> maps =
-        await dbClient.query(TABLE, columns: [ID, ACIKLAMA, KATEGORI, TARIH]);
+    List<Map> maps = await dbClient
+        .query(TABLE, columns: [ID, DATE, ICTIMI, CRAVINGS, ZORLANMA, KACTANE]);
     //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
-    List<BasariModel> basariList = [];
+    List<DailyModel> dailyList = [];
     if (maps.length > 0) {
       // for (int i = 0; i < maps.length; i++) {
       //   workouts.add(WorkOut.fromMap(maps[i]));
       // }
       for (int i = maps.length - 1; i >= 0; i--) {
-        basariList.add(BasariModel.fromMap(maps[i]));
+        dailyList.add(DailyModel.fromMap(maps[i]));
       }
     }
-    return basariList;
+    return dailyList.toList();
   }
 
-  Future<int> deleteBasari(int id) async {
+  Future<int> deleteDaily(int id) async {
     var dbClient = await db;
     return await dbClient.delete(TABLE, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> updateBasari(BasariModel workouts) async {
+  Future<int> deleteDailyTable() async {
+    var dbClient = await db;
+    return await dbClient.delete(TABLE);
+  }
+
+  Future<int> updateDaily(DailyModel workouts) async {
     var dbClient = await db;
     return await dbClient.update(TABLE, workouts.toMap(),
         where: '$ID = ?', whereArgs: [workouts.id]);

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iknow/dailyModel.dart';
-import 'package:iknow/event.dart';
-import 'package:iknow/helper/db_helperDaily.dart';
-
+import 'package:iknow/models/dailyModel.dart';
+import 'package:iknow/models/event.dart';
+import 'package:iknow/services/db_helperDaily.dart';
 import 'takvim.dart';
 
 void main() async {
@@ -51,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     // eventDetailsSetup();
-
+    //deletingDates();
     _selectedTab = 0;
     DateTime now = DateTime.now();
 

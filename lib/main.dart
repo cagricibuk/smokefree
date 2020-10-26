@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:iknow/helper/shared_preference.dart';
-import 'package:iknow/kayitModel.dart';
+import 'package:iknow/services/shared_preference.dart';
+import 'package:iknow/models/kayitModel.dart';
 import 'package:iknow/views/addDaily.dart';
 import 'package:iknow/views/badges.dart';
 import 'package:iknow/views/fagerstrom.dart';
@@ -16,11 +16,11 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'basariModel.dart';
-import 'helper/db_helper.dart';
+import 'models/basariModel.dart';
+import 'services/db_helper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'helper/db_helperBasari.dart';
+import 'services/db_helperBasari.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

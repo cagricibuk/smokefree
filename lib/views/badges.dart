@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iknow/helper/db_helperBasari.dart';
+import 'package:iknow/services/db_helperBasari.dart';
 
-import '../basariModel.dart';
+import '../models/basariModel.dart';
 
 class Badges extends StatefulWidget {
   @override

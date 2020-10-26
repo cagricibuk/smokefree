@@ -5,19 +5,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:iknow/ana.dart';
-import 'package:iknow/basariModel.dart';
-import 'package:iknow/helper/db_helper.dart';
-import 'package:iknow/helper/db_helperBasari.dart';
-import 'package:iknow/helper/db_helperMissions.dart';
-import 'package:iknow/helper/db_helperTips.dart';
-import 'package:iknow/helper/shared_preference.dart';
-import 'package:iknow/kayitModel.dart';
+import 'package:iknow/models/basariModel.dart';
+import 'package:iknow/services/db_helper.dart';
+import 'package:iknow/services/db_helperBasari.dart';
+import 'package:iknow/services/db_helperMissions.dart';
+import 'package:iknow/services/db_helperTips.dart';
+import 'package:iknow/services/shared_preference.dart';
+import 'package:iknow/models/kayitModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:iknow/missionModel.dart';
+import 'package:iknow/models/missionModel.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../tipsModel.dart';
+import '../models/tipsModel.dart';
 
 class KayitSoru extends StatefulWidget {
   final int kayitSekli;

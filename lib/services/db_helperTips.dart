@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../tipsModel.dart';
+import '../models/tipsModel.dart';
 
 class DBHelperTips {
   static Database _db;

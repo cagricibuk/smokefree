@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:iknow/helper/saveForModel.dart';
-import 'package:iknow/kayitModel.dart';
+import 'package:iknow/models/saveForModel.dart';
+import 'package:iknow/models/kayitModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';

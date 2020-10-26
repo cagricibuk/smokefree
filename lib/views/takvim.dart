@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/ana.dart';
-import 'package:iknow/dailyModel.dart';
-import 'package:iknow/event.dart';
+import 'package:iknow/models/dailyModel.dart';
+import 'package:iknow/models/event.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
-import 'package:iknow/helper/db_helperDaily.dart';
+import 'package:iknow/services/db_helperDaily.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:iknow/models/event.dart';
 
 class DayPickerPage extends StatefulWidget {
   final List<Event> events;
@@ -240,15 +241,8 @@ class _DayPickerPageState extends State<DayPickerPage> {
                   FlatButton(
                     color: Colors.red,
                     onPressed: () async {
-                      final User user = auth.currentUser;
-                      final uid = user.uid;
-                      await firestore
-                          .collection('users')
-                          .doc(uid)
-                          .collection("daily")
-                          .doc(_id.toString())
-                          .delete();
                       setState(() {
+                        deleteRecords();
                         dbHelper.deleteDaily(idler[indis]);
                         widget.events.clear();
                         //eventDetailsSetup();

@@ -11,7 +11,7 @@ class DailyModel {
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-
+    map["id"] = id;
     map["tarih"] = tarih;
     map["ictimi"] = ictimi;
     map["kactane"] = kactane;

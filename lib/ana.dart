@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iknow/cravings.dart';
+import 'package:iknow/views/cravings.dart';
 import 'package:iknow/views/missions.dart';
 import 'package:iknow/views/takvimAna.dart';
 import 'main.dart';

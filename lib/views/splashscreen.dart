@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:iknow/ana.dart';
-import 'package:iknow/helper/shared_preference.dart';
+import 'package:iknow/services/shared_preference.dart';
 import 'package:iknow/main.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iknow/ana.dart';
-import 'package:iknow/helper/db_helperMissions.dart';
-import 'package:iknow/missionModel.dart';
+import 'package:iknow/services/db_helperMissions.dart';
+import 'package:iknow/models/missionModel.dart';
 
 // ignore: must_be_immutable
 class MissionPage extends StatefulWidget {
