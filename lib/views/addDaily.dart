@@ -42,7 +42,7 @@ class _AddDailyState extends State<AddDaily> {
                 if (tebrikler == true) {
                   print("yapiyor");
                   var yeniGunluk = DailyModel(
-                      0,
+                      null,
                       datePicked.toString(),
                       (!tebrikler).toString(),
                       0,

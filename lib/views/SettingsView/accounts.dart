@@ -10,9 +10,25 @@ class Accounts extends StatefulWidget {
   _AccountsState createState() => _AccountsState();
 }
 
+var currentAdi, currentSoyadi;
 var dbHelperDaily = DBHelperDaily();
 final FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+void getAdSoyad() async {
+  final User user = auth.currentUser;
+  final uid = user.uid;
+  print(uid);
+  QuerySnapshot querySnapshot2 = await firestore.collection("users").get();
+  var list2 = querySnapshot2.docs;
+
+  list2.forEach((element) {
+    if (element.id == uid) {
+      currentAdi = element.get("adi");
+      currentSoyadi = element.get("soyadi");
+    }
+  });
+}
 
 void deleteLocalDailyBilgiler() {
   print("deleting local table");
@@ -46,9 +62,8 @@ void getAccountsDailyBilgiler() async {
 class _AccountsState extends State<Accounts> {
   @override
   void initState() {
-    deleteLocalDailyBilgiler();
-    getAccountsDailyBilgiler();
     super.initState();
+    getAdSoyad();
   }
 
   @override
@@ -71,7 +86,7 @@ class _AccountsState extends State<Accounts> {
               height: 10,
             ),
             Text(
-              "Adi Soyadi",
+              "$currentAdi $currentSoyadi",
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(
@@ -83,7 +98,10 @@ class _AccountsState extends State<Accounts> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   color: Color(0xffDB4437),
-                  onPressed: () {},
+                  onPressed: () {
+                    deleteLocalDailyBilgiler();
+                    getAccountsDailyBilgiler();
+                  },
                   child: Text(
                     "GOOGLE İLE BAĞLA",
                     style: TextStyle(color: Colors.white),
